@@ -90,7 +90,7 @@
 %Anpassung trivlist
 \let\fwd@trivlist\trivlist
 \let\endfwd@trivlist\endtrivlist
-\patchcmd\endmd@trivlist\@endparenv\fwd@endparenv{}{}
+\patchcmd\endfwd@trivlist\@endparenv\fwd@endparenv{}{}
 \def\fwd@endparenv{%
   \addpenalty\@endparpenalty\addvspace\fwd@skipbelow@length\@endpetrue}
 
@@ -114,7 +114,7 @@
      \fi%
 }
 
-\newrobustcmd*\md@footnoteinput{%
+\newrobustcmd*\fwd@footnoteinput{%
    \def\@mpfn{mpfootnote}%
    \def\thempfn{\thempfootnote}%
    \c@mpfootnote\z@%
@@ -277,30 +277,30 @@
 %%==================================================%%
 %================= Breite der Box =================%%
 %%==================================================%%
-\newrobustcmd*\md@advancelength@orizontalmargin@add[1]{%
-  \advance\md@horizontalspaceofbox by -\csname mdf@#1@length\endcsname\relax%
+\newrobustcmd*\fwd@advancelength@orizontalmargin@add[1]{%
+  \advance\fwd@horizontalspaceofbox by -\csname mdf@#1@length\endcsname\relax%
 }
 
 \newlength\fwd@horizontalspaceofbox
 \newrobustcmd*\fwd@horizontalmargin@equation{%
     \setlength{\fwd@horizontalspaceofbox}{\fwd@width@length}%
-    \ifdimless{\md@horizontalspaceofbox}{3cm}{\PackageWarning{You have only a width of 3cm\MessageBreak}}{}%
-    \ifdimless{\pagewidth}{\md@horizontalspaceofbox}{\PackageWarning{You have a width larger than pagesize 3cm\MessageBreak}}{}%
+    \ifdimless{\fwd@horizontalspaceofbox}{3cm}{\PackageWarning{You have only a width of 3cm\MessageBreak}}{}%
+    \ifdimless{\pagewidth}{\fwd@horizontalspaceofbox}{\PackageWarning{You have a width larger than pagesize 3cm\MessageBreak}}{}%
     \hsize=\fwd@horizontalspaceofbox%
 }
 
 %%==================================================%%
 %%===========Additionsalgorithmus fuer for==========%%
 %%==================================================%%
-\newrobustcmd*\md@advancelength@verticalmarginwhole[1]{%
-  \advance\md@verticalmarginwhole@length by \csname mdf@#1@length\endcsname\relax%
+\newrobustcmd*\fwd@advancelength@verticalmarginwhole[1]{%
+  \advance\fwd@verticalmarginwhole@length by \csname mdf@#1@length\endcsname\relax%
 }
 
-\newrobustcmd*\md@advancelength@freevspace@sub[1]{%
+\newrobustcmd*\fwd@advancelength@freevspace@sub[1]{%
   \advance\dimen@ by -\csname mdf@#1@length\endcsname\relax%
 }
 
-\newrobustcmd*\md@advancelength@freevspace@add[1]{%
+\newrobustcmd*\fwd@advancelength@freevspace@add[1]{%
   \advance\dimen@ by \csname mdf@#1@length\endcsname\relax%
 }
 %%==================================================%%
@@ -314,74 +314,74 @@
 %%===========Ausgaberoutine -> Berechnung===========%%
 %%==================================================%%
 
-\newrobustcmd*\md@put@frame@standalone{\relax%
+\newrobustcmd*\fwd@put@frame@standalone{\relax%
    \ifvoid\@tempboxa\relax
-      \md@PackageWarning{The environment is empty\MessageBreak}%
-      \let\md@reserved@a\relax%
+      \fwd@PackageWarning{The environment is empty\MessageBreak}%
+      \let\fwd@reserved@a\relax%
    \else
       %Hier berechnung Box-Inhalt+Rahmen oben und unten
-      \setlength{\md@verticalmarginwhole@length}{\dimexpr\ht\@tempboxa+\dp\@tempboxa\relax}%
-      \mdf@dolist{\md@advancelength@verticalmarginwhole}{%
+      \setlength{\fwd@verticalmarginwhole@length}{\dimexpr\ht\@tempboxa+\dp\@tempboxa\relax}%
+      \mdf@dolist{\fwd@advancelength@verticalmarginwhole}{%
                   outerlinewidth,middlelinewidth,innerlinewidth,innertopmargin,
                   innerbottommargin,innerlinewidth,middlelinewidth,outerlinewidth}%
-      \md@keeplines@single%
-      \def\md@reserved@a{\md@putbox@single}%
+      \fwd@keeplines@single%
+      \def\fwd@reserved@a{\fwd@putbox@single}%
    \fi
-   \md@reserved@a%
+   \fwd@reserved@a%
 }
 
 
-\def\md@put@frame{\relax%
+\def\fwd@put@frame{\relax%
 \ifvoid\@tempboxa\relax
-\md@PackageWarning{The environment is empty\MessageBreak}%
-\let\md@reserved@a\relax%
+\fwd@PackageWarning{The environment is empty\MessageBreak}%
+\let\fwd@reserved@a\relax%
 \else
-   \md@print@space%
-   \md@freepagevspace%
-   \md@PackageInfoSpace{\the\md@freevspace@length before the beginning of the environment^^J
+   \fwd@print@space%
+   \fwd@freepagevspace%
+   \fwd@PackageInfoSpace{\the\fwd@freevspace@length before the beginning of the environment^^J
                         ending on input line \MessageBreak}%
-   \ifdimless{\md@freevspace@length}{2\baselineskip}
-             {\md@PackageInfo{Not enough space on this page}%die Seite hat nur noch minimal Platz
+   \ifdimless{\fwd@freevspace@length}{2\baselineskip}
+             {\fwd@PackageInfo{Not enough space on this page}%die Seite hat nur noch minimal Platz
               \vfill\eject%
-              \def\md@reserved@a{\md@put@frame}%
+              \def\fwd@reserved@a{\fwd@put@frame}%
              }{%
                %Hier berechnung Box-Inhalt+Rahmen oben und unten
-              \setlength{\md@verticalmarginwhole@length}{\dimexpr\ht\@tempboxa+\dp\@tempboxa\relax}%
-              \mdf@dolist{\md@advancelength@verticalmarginwhole}{%
+              \setlength{\fwd@verticalmarginwhole@length}{\dimexpr\ht\@tempboxa+\dp\@tempboxa\relax}%
+              \mdf@dolist{\fwd@advancelength@verticalmarginwhole}{%
                      outerlinewidth,middlelinewidth,innerlinewidth,innertopmargin,
                      innerbottommargin,innerlinewidth,middlelinewidth,outerlinewidth}%
-             \md@keeplines@single%
-             \ifdimless{\md@verticalmarginwhole@length}{\md@freevspace@length}%
+             \fwd@keeplines@single%
+             \ifdimless{\fwd@verticalmarginwhole@length}{\fwd@freevspace@length}%
                 {%passt auf Seite%
                   \begingroup
-                   \iftoggle{md:checktwoside}{\md@@setzref}{}%
-                    \md@putbox@single%%passt auf Seite
+                   \iftoggle{md:checktwoside}{\fwd@@setzref}{}%
+                    \fwd@putbox@single%%passt auf Seite
                   \endgroup
-                 \let\md@reserved@a\relax}%
-                {\def\md@reserved@a{\md@put@frame@i}}%passt nicht auf Seite
+                 \let\fwd@reserved@a\relax}%
+                {\def\fwd@reserved@a{\fwd@put@frame@i}}%passt nicht auf Seite
              }%
 \fi
-\md@reserved@a%
+\fwd@reserved@a%
 }
 
-\def\md@put@frame@i{%Box muss gesplittet werden -- Ausgabe der ersten Teilbox
+\def\fwd@put@frame@i{%Box muss gesplittet werden -- Ausgabe der ersten Teilbox
       %Berechnung der Splittgroesse -- Linien und Abstand oben
-      \md@freepagevspace%
-      \dimen@=\the\md@freevspace@length%
+      \fwd@freepagevspace%
+      \dimen@=\the\fwd@freevspace@length%
       \dimen@i=\mdf@innertopmargin@length%
       \advance\dimen@i by \mdf@linewidth@length%
       \advance\dimen@i by 2\baselineskip%
       \ifdim\dimen@<\dimen@i\relax
            \hrule \@height\z@ \@width\hsize%
            \vfill\eject%
-           \def\md@reserved@a{\md@put@frame}%
+           \def\fwd@reserved@a{\fwd@put@frame}%
       \else%
-      \mdf@dolist{\md@advancelength@freevspace@sub}{%
+      \mdf@dolist{\fwd@advancelength@freevspace@sub}{%
                 outerlinewidth,middlelinewidth,innerlinewidth,%
                 innertopmargin,splitbottomskip}%
       \ifbool{mdf@topline}{}{\advance\dimen@ by \mdf@middlelinewidth@length}%
       \ifdimless{\ht\@tempboxa+\dp\@tempboxa}{\dimen@}%
-         {\md@PackageWarning{You got a bad break\MessageBreak
+         {\fwd@PackageWarning{You got a bad break\MessageBreak
                              you have to change it manually\MessageBreak
                              by changing the text, the space\MessageBreak
                              or something else}%
@@ -392,7 +392,7 @@
          \setbox\tw@\vsplit\@tempboxa to \dimen@
          \setbox\tw@\vbox{\unvbox\tw@}%needed?
          \ifdimgreater{\ht\tw@+\dp\tw@}{\dimen@}{%Falsch gesplittet
-            \md@PackageInfo{Box was splittet wrong\MessageBreak}%
+            \fwd@PackageInfo{Box was splittet wrong\MessageBreak}%
              \dimen@i=\dimen@
               \advance\dimen@ by -\ht\tw@
               \advance\dimen@ by -\dp\tw@
@@ -407,77 +407,77 @@
              }{}%
          \setbox\@tempboxa\vbox{\unvbox\@tempboxa}%PRUEFEN!!!!
          \ifvoid\@tempboxa
-           \md@PackageWarning{You got a bad break\MessageBreak
+           \fwd@PackageWarning{You got a bad break\MessageBreak
                                because the splittet box is empty\MessageBreak
                                You have to change the page settings\MessageBreak
                                like enlargethispage or something else}%
            \setbox\@tempboxa\vbox{\box\tw@\box\@tempboxa}%
-           \def\md@reserved@a{\md@put@frame}%
+           \def\fwd@reserved@a{\fwd@put@frame}%
          \fi
          \ifvoid\tw@%%pruefe, ob erste Box leer ist
           \hrule \@height\z@ \@width\hsize
           \vfill\eject%  
-             \def\md@reserved@a{\md@put@frame}%
+             \def\fwd@reserved@a{\fwd@put@frame}%
          \else
           \ifdimequal{\ht\tw@}{0pt}%
             {\hrule \@height\z@ \@width\hsize%
              \vfill\eject%
              \setbox\@tempboxa\vbox{\unvbox\tw@\unvbox\@tempboxa}
-             \def\md@reserved@a{\md@put@frame}%
+             \def\fwd@reserved@a{\fwd@put@frame}%
             }%
             {%
             \begingroup
-               \iftoggle{md:checktwoside}{\md@@setzref}{}%
-               \md@putbox@first%%%Groesse des Splittens passt
+               \iftoggle{md:checktwoside}{\fwd@@setzref}{}%
+               \fwd@putbox@first%%%Groesse des Splittens passt
             \endgroup
             \hrule \@height\z@ \@width\hsize
             \vfill\eject%
-            \def\md@reserved@a{\md@put@frame@ii}%
+            \def\fwd@reserved@a{\fwd@put@frame@ii}%
             }%
          \fi% 
       \fi%
-\md@reserved@a%
+\fwd@reserved@a%
 }
 
-\def\md@put@frame@ii{%Ausgabe der mittleren Box(en) wenn vorhanden
-  \setlength{\md@freevspace@length}{\vsize}%
+\def\fwd@put@frame@ii{%Ausgabe der mittleren Box(en) wenn vorhanden
+  \setlength{\fwd@freevspace@length}{\vsize}%
   \setlength{\dimen@}{\dimexpr\ht\@tempboxa+\dp\@tempboxa\relax}%
-  \mdf@dolist{\md@advancelength@freevspace@add}{%
+  \mdf@dolist{\fwd@advancelength@freevspace@add}{%
                 outerlinewidth,middlelinewidth,innerlinewidth,%
                 innerbottommargin}%%%Addition der Linien unten
    \ifbool{mdf@bottomline}{}{\advance\dimen@ by -\mdf@middlelinewidth@length\relax}%
-   \ifdimgreater{\dimen@}{\md@freevspace@length}%
+   \ifdimgreater{\dimen@}{\fwd@freevspace@length}%
     {%
-        \advance\md@freevspace@length by -\mdf@splitbottomskip@length
+        \advance\fwd@freevspace@length by -\mdf@splitbottomskip@length
         \splitmaxdepth\z@ \splittopskip\mdf@splittopskip@length%
-        \setbox\tw@\vsplit\@tempboxa to \md@freevspace@length%
+        \setbox\tw@\vsplit\@tempboxa to \fwd@freevspace@length%
         \setbox\tw@\vbox{\unvbox\tw@}%PRUEFEN!!!
         \setbox\@tempboxa\vbox{\unvbox\@tempboxa}%PRUEFEN!!!!
         \ifvoid\@tempboxa\relax%
-           \md@PackageWarning{You got a bad break\MessageBreak
+           \fwd@PackageWarning{You got a bad break\MessageBreak
                                because the split box is empty\MessageBreak
                                You have to change the settings}%
          \fi%
         \begingroup
-           \iftoggle{md:checktwoside}{\md@@setzref}{}%
-           \md@putbox@middle%
+           \iftoggle{md:checktwoside}{\fwd@@setzref}{}%
+           \fwd@putbox@middle%
         \endgroup
         \hrule \@height\z@ \@width\hsize
         \vfill\eject
-        \def\md@reserved@a{\md@put@frame@ii}%
+        \def\fwd@reserved@a{\fwd@put@frame@ii}%
      }%Hier die Ausgabe der mittleren Box
      {\ifvoid\@tempboxa
-           \md@PackageWarning{You got a bad break\MessageBreak
+           \fwd@PackageWarning{You got a bad break\MessageBreak
                                because the last split box is empty\MessageBreak
                                You have to change the settings}%
       \fi%
       \begingroup
-          \iftoggle{md:checktwoside}{\md@@setzref}{}%
-          \md@putbox@second%
+          \iftoggle{md:checktwoside}{\fwd@@setzref}{}%
+          \fwd@putbox@second%
       \endgroup
-      \let\md@reserved@a\relax%
+      \let\fwd@reserved@a\relax%
      }%Hier kommt die Ausgabe der letzten Box
-  \md@reserved@a%
+  \fwd@reserved@a%
 }
 
 \endinput
