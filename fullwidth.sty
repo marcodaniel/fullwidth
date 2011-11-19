@@ -128,11 +128,11 @@
   \iffwd@nobreak%Option nobreak=true?
         \def\fwd@reserved@a{\fwd@standalone}%
      \else
-       \def\fwd@reserved@a{\fwd@output}%
+       \def\fwd@reserved@a{\fwd@putframe}%
        \ifnum\@floatpenalty<0\relax%Detecting float
           \if@twocolumn%
              \ifx\@captype\@undefined
-                 \def\fwd@reserved@a{\fwd@output}%
+                 \def\fwd@reserved@a{\fwd@putframe}%
              \else
                  \PackageWarning{fullwidth}{fullwidth inside float  ^^J
                                  fullwidth uses option nobreak}%
@@ -155,8 +155,8 @@
              \def\fwd@reserved@a{\fwd@standalone}%
       \fi%
   \fi%
-\fwd@standalone%
-%\fwd@reserved@a%
+%\fwd@standalone%
+\fwd@reserved@a%
 }
 \newcommand\fullwidth{}
 \def\fullwidth#1{%
@@ -266,6 +266,8 @@
 %%==================================================%%
 %%================= Platz auf Seite ================%%
 %%==================================================%%
+
+\newlength\fwd@freevspace@length
 \newrobustcmd*\fwd@freepagevspace{%
      \penalty\@M \vskip 2\baselineskip \vskip\height
      \penalty9999 \vskip -2\baselineskip \vskip-\height
@@ -326,46 +328,37 @@
    \else
       %Hier berechnung Box-Inhalt+ oben und unten
       \def\fwd@reserved@a{
-           \leftline{%
-%             \hspace*{\fwd@leftmargin@length}%
-              \box\@tempboxa%
+           \leftline{\hspace*{\fwd@leftmargin@length}\box\@tempboxa}%
            }%
-         }%
    \fi
    \fwd@reserved@a%
 }
 
 
-\def\fwd@put@frame{\relax%
-\ifvoid\@tempboxa\relax
-\fwd@PackageWarning{The environment is empty\MessageBreak}%
-\let\fwd@reserved@a\relax%
-\else
-   \fwd@print@space%
+\def\fwd@putframe{\relax%
+  \ifvoid\@tempboxa\relax
+    \PackageWarning{fullwidth}{The environment is empty\MessageBreak}%
+    \let\fwd@reserved@a\relax%
+  \else
    \fwd@freepagevspace%
-   \fwd@PackageInfoSpace{\the\fwd@freevspace@length before the beginning of the environment^^J
-                        ending on input line \MessageBreak}%
    \ifdimless{\fwd@freevspace@length}{2\baselineskip}
              {\fwd@PackageInfo{Not enough space on this page}%die Seite hat nur noch minimal Platz
               \vfill\eject%
               \def\fwd@reserved@a{\fwd@put@frame}%
              }{%
                %Hier berechnung Box-Inhalt+Rahmen oben und unten
-              \setlength{\fwd@verticalmarginwhole@length}{\dimexpr\ht\@tempboxa+\dp\@tempboxa\relax}%
-              \fwd@dolist{\fwd@advancelength@verticalmarginwhole}{%
-                     outerlinewidth,middlelinewidth,innerlinewidth,innertopmargin,
-                     innerbottommargin,innerlinewidth,middlelinewidth,outerlinewidth}%
-             \ifdimless{\fwd@verticalmarginwhole@length}{\fwd@freevspace@length}%
+%              \setlength{\fwd@verticalmarginwhole@length}{\dimexpr\ht\@tempboxa+\dp\@tempboxa\relax}%
+              \ifdimless{\ht\@tempboxa+\dp\@tempboxa}{\fwd@freevspace@length}%
                 {%passt auf Seite%
                   \begingroup
-                   \iftoggle{md:checktwoside}{\fwd@@setzref}{}%
-                    \fwd@putbox@single%%passt auf Seite
+                   \iftoggle{fwd:checktwoside}{\fwd@@setzref}{}%
+                    %
                   \endgroup
                  \let\fwd@reserved@a\relax}%
                 {\def\fwd@reserved@a{\fwd@put@frame@i}}%passt nicht auf Seite
              }%
-\fi
-\fwd@reserved@a%
+  \fi
+ \fwd@reserved@a%
 }
 
 \def\fwd@put@frame@i{%Box muss gesplittet werden -- Ausgabe der ersten Teilbox
@@ -431,7 +424,7 @@
             }%
             {%
             \begingroup
-               \iftoggle{md:checktwoside}{\fwd@@setzref}{}%
+               \iftoggle{fwd:checktwoside}{\fwd@@setzref}{}%
                \fwd@putbox@first%%%Groesse des Splittens passt
             \endgroup
             \hrule \@height\z@ \@width\hsize
@@ -463,7 +456,7 @@
                                You have to change the settings}%
          \fi%
         \begingroup
-           \iftoggle{md:checktwoside}{\fwd@@setzref}{}%
+           \iftoggle{fwd:checktwoside}{\fwd@@setzref}{}%
            \fwd@putbox@middle%
         \endgroup
         \hrule \@height\z@ \@width\hsize
@@ -476,7 +469,7 @@
                                You have to change the settings}%
       \fi%
       \begingroup
-          \iftoggle{md:checktwoside}{\fwd@@setzref}{}%
+          \iftoggle{fwd:checktwoside}{\fwd@@setzref}{}%
           \fwd@putbox@second%
       \endgroup
       \let\fwd@reserved@a\relax%
