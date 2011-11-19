@@ -30,7 +30,7 @@
   \fwd@lengthoption@doubledo#1\@nil%
 }
 \def\fwd@lengthoption@doubledo#1==#2\@nil{%
-  \csdef{#1}{}
+  \csdef{fwd@#1}{}
   \expandafter\newlength\csname fwd@#1@length\endcsname%
   \expandafter\deflength\csname fwd@#1@length\endcsname{#2\relax}%
   \fdw@define@key@length{#1}%
@@ -70,12 +70,13 @@
 }
 
 \DeclareBoolOption{nobreak}
+\DeclareBoolOption{footnoteinside}
 
 \ProcessKeyvalOptions*\relax
 \newrobustcmd{\fullwidthsetup}{\setkeys{fwd}}
 
 
-%Anpassung lrbox
+%%Anpassung lrbox
 \let\fwd@lrbox\lrbox
 \patchcmd\fwd@lrbox\hbox\vbox{}{}
 \patchcmd\fwd@lrbox\color@setgroup{%
@@ -154,10 +155,11 @@
              \def\fwd@reserved@a{\fwd@standalone}%
       \fi%
   \fi%
-\fwd@reserved@a%
+\fwd@standalone%
+%\fwd@reserved@a%
 }
-
-\newenvironment{fullwidth}[1][]{%
+\newcommand\fullwidth{}
+\def\fullwidth#1{%
   \begingroup
   \fullwidthsetup{#1}%%
    \fwd@twoside@checklength%
@@ -171,8 +173,9 @@
    \fwd@horizontalmargin@equation%
    \fwd@footnoteinput%
    \begin{fwd@lrbox}{\@tempboxa}%
- }{
-   \ifmdf@footnoteinside%
+ }
+\def\endfullwidth{%
+    \iffwd@footnoteinside%
       \def\fwd@reserveda{%
         \fwd@footnoteoutput%
         \end{fwd@lrbox}%
@@ -189,7 +192,7 @@
     \fwd@reserveda%
     \end{fwd@trivlist}%
     \hrule \@height\z@ \@width\hsize
-\endgroup\@endparenv%
+\endgroup%\@endparenv%
 }
 
 
@@ -207,7 +210,7 @@
               }%
               {%
               \PackageInfo{fullwidth}{You haven't set the outermargin/innermargin^^
-                                 mdframed will use leftmargin/rightmargin}%
+                                 fullwidth will use leftmargin/rightmargin}%
               \settoggle{fwd:checktwoside}{false}%
               }%
               {\settoggle{fwd:checktwoside}{true}}%
@@ -278,14 +281,16 @@
 %================= Breite der Box =================%%
 %%==================================================%%
 \newrobustcmd*\fwd@advancelength@orizontalmargin@add[1]{%
-  \advance\fwd@horizontalspaceofbox by -\csname mdf@#1@length\endcsname\relax%
+  \advance\fwd@horizontalspaceofbox by -\csname fwd@#1@length\endcsname\relax%
 }
+
+
+\newlength\fwd@pagewidth
 
 \newlength\fwd@horizontalspaceofbox
 \newrobustcmd*\fwd@horizontalmargin@equation{%
     \setlength{\fwd@horizontalspaceofbox}{\fwd@width@length}%
     \ifdimless{\fwd@horizontalspaceofbox}{3cm}{\PackageWarning{You have only a width of 3cm\MessageBreak}}{}%
-    \ifdimless{\pagewidth}{\fwd@horizontalspaceofbox}{\PackageWarning{You have a width larger than pagesize 3cm\MessageBreak}}{}%
     \hsize=\fwd@horizontalspaceofbox%
 }
 
@@ -293,39 +298,39 @@
 %%===========Additionsalgorithmus fuer for==========%%
 %%==================================================%%
 \newrobustcmd*\fwd@advancelength@verticalmarginwhole[1]{%
-  \advance\fwd@verticalmarginwhole@length by \csname mdf@#1@length\endcsname\relax%
+  \advance\fwd@verticalmarginwhole@length by \csname fwd@#1@length\endcsname\relax%
 }
 
 \newrobustcmd*\fwd@advancelength@freevspace@sub[1]{%
-  \advance\dimen@ by -\csname mdf@#1@length\endcsname\relax%
+  \advance\dimen@ by -\csname fwd@#1@length\endcsname\relax%
 }
 
 \newrobustcmd*\fwd@advancelength@freevspace@add[1]{%
-  \advance\dimen@ by \csname mdf@#1@length\endcsname\relax%
+  \advance\dimen@ by \csname fwd@#1@length\endcsname\relax%
 }
 %%==================================================%%
 %%====================Reset changes=================%%
 %%==================================================%%
-\protected@edef\fwd@reset{\boxmaxdepth\the\boxmaxdepth 
-                          \splittopskip\the\splittopskip}%
+%\protected@edef\fwd@reset{\boxmaxdepth\the\boxmaxdepth 
+%                          \splittopskip\the\splittopskip}%
 
 
 %%==================================================%%
 %%===========Ausgaberoutine -> Berechnung===========%%
 %%==================================================%%
 
-\newrobustcmd*\fwd@put@frame@standalone{\relax%
+\newrobustcmd*\fwd@standalone{\relax%
    \ifvoid\@tempboxa\relax
-      \fwd@PackageWarning{The environment is empty\MessageBreak}%
+      \PackageWarning{fullwidth}{The environment is empty\MessageBreak}%
       \let\fwd@reserved@a\relax%
    \else
-      %Hier berechnung Box-Inhalt+Rahmen oben und unten
-      \setlength{\fwd@verticalmarginwhole@length}{\dimexpr\ht\@tempboxa+\dp\@tempboxa\relax}%
-      \mdf@dolist{\fwd@advancelength@verticalmarginwhole}{%
-                  outerlinewidth,middlelinewidth,innerlinewidth,innertopmargin,
-                  innerbottommargin,innerlinewidth,middlelinewidth,outerlinewidth}%
-      \fwd@keeplines@single%
-      \def\fwd@reserved@a{\fwd@putbox@single}%
+      %Hier berechnung Box-Inhalt+ oben und unten
+      \def\fwd@reserved@a{
+           \leftline{%
+%             \hspace*{\fwd@leftmargin@length}%
+              \box\@tempboxa%
+           }%
+         }%
    \fi
    \fwd@reserved@a%
 }
@@ -347,10 +352,9 @@
              }{%
                %Hier berechnung Box-Inhalt+Rahmen oben und unten
               \setlength{\fwd@verticalmarginwhole@length}{\dimexpr\ht\@tempboxa+\dp\@tempboxa\relax}%
-              \mdf@dolist{\fwd@advancelength@verticalmarginwhole}{%
+              \fwd@dolist{\fwd@advancelength@verticalmarginwhole}{%
                      outerlinewidth,middlelinewidth,innerlinewidth,innertopmargin,
                      innerbottommargin,innerlinewidth,middlelinewidth,outerlinewidth}%
-             \fwd@keeplines@single%
              \ifdimless{\fwd@verticalmarginwhole@length}{\fwd@freevspace@length}%
                 {%passt auf Seite%
                   \begingroup
@@ -368,18 +372,18 @@
       %Berechnung der Splittgroesse -- Linien und Abstand oben
       \fwd@freepagevspace%
       \dimen@=\the\fwd@freevspace@length%
-      \dimen@i=\mdf@innertopmargin@length%
-      \advance\dimen@i by \mdf@linewidth@length%
+      \dimen@i=\fwd@innertopmargin@length%
+      \advance\dimen@i by \fwd@linewidth@length%
       \advance\dimen@i by 2\baselineskip%
       \ifdim\dimen@<\dimen@i\relax
            \hrule \@height\z@ \@width\hsize%
            \vfill\eject%
            \def\fwd@reserved@a{\fwd@put@frame}%
       \else%
-      \mdf@dolist{\fwd@advancelength@freevspace@sub}{%
+      \fwd@dolist{\fwd@advancelength@freevspace@sub}{%
                 outerlinewidth,middlelinewidth,innerlinewidth,%
                 innertopmargin,splitbottomskip}%
-      \ifbool{mdf@topline}{}{\advance\dimen@ by \mdf@middlelinewidth@length}%
+      \ifbool{fwd@topline}{}{\advance\dimen@ by \fwd@middlelinewidth@length}%
       \ifdimless{\ht\@tempboxa+\dp\@tempboxa}{\dimen@}%
          {\fwd@PackageWarning{You got a bad break\MessageBreak
                              you have to change it manually\MessageBreak
@@ -388,7 +392,7 @@
           \advance\dimen@ by -1.8\baselineskip\relax%
          }{}%
          \advance\dimen@ by -1pt\relax%Box darf nicht zu Groß werden.
-         \splitmaxdepth\z@ \splittopskip\mdf@splittopskip@length%
+         \splitmaxdepth\z@ \splittopskip\fwd@splittopskip@length%
          \setbox\tw@\vsplit\@tempboxa to \dimen@
          \setbox\tw@\vbox{\unvbox\tw@}%needed?
          \ifdimgreater{\ht\tw@+\dp\tw@}{\dimen@}{%Falsch gesplittet
@@ -401,7 +405,7 @@
              \setbox\@tempboxa\vbox{\unvbox\tw@%
                                      \hrule \@height\dp\strutbox \@width\z@%benoetigt um Tiefe zu haben
                                      \unvbox\@tempboxa}
-             \splittopskip\mdf@splittopskip@length%
+             \splittopskip\fwd@splittopskip@length%
              \setbox\tw@\vsplit\@tempboxa to \dimen@i
              \setbox\tw@\vbox{\unvbox\tw@}%
              }{}%
@@ -442,14 +446,14 @@
 \def\fwd@put@frame@ii{%Ausgabe der mittleren Box(en) wenn vorhanden
   \setlength{\fwd@freevspace@length}{\vsize}%
   \setlength{\dimen@}{\dimexpr\ht\@tempboxa+\dp\@tempboxa\relax}%
-  \mdf@dolist{\fwd@advancelength@freevspace@add}{%
+  \fwd@dolist{\fwd@advancelength@freevspace@add}{%
                 outerlinewidth,middlelinewidth,innerlinewidth,%
                 innerbottommargin}%%%Addition der Linien unten
-   \ifbool{mdf@bottomline}{}{\advance\dimen@ by -\mdf@middlelinewidth@length\relax}%
+   \ifbool{fwd@bottomline}{}{\advance\dimen@ by -\fwd@middlelinewidth@length\relax}%
    \ifdimgreater{\dimen@}{\fwd@freevspace@length}%
     {%
-        \advance\fwd@freevspace@length by -\mdf@splitbottomskip@length
-        \splitmaxdepth\z@ \splittopskip\mdf@splittopskip@length%
+        \advance\fwd@freevspace@length by -\fwd@splitbottomskip@length
+        \splitmaxdepth\z@ \splittopskip\fwd@splittopskip@length%
         \setbox\tw@\vsplit\@tempboxa to \fwd@freevspace@length%
         \setbox\tw@\vbox{\unvbox\tw@}%PRUEFEN!!!
         \setbox\@tempboxa\vbox{\unvbox\@tempboxa}%PRUEFEN!!!!
