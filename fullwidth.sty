@@ -3,7 +3,7 @@
 %%
 %% Currently the package has a beta-Status
 %%
-%% Copyright (c) 2010 Marco Daniel
+%% Copyright (c) 2011 Marco Daniel
 %%
 %% This package may be distributed under the terms of the LaTeX Project
 %% Public License, as described in lppl.txt in the base LaTeX distribution.
@@ -296,20 +296,8 @@
     \hsize=\fwd@horizontalspaceofbox%
 }
 
-%%==================================================%%
-%%===========Additionsalgorithmus fuer for==========%%
-%%==================================================%%
-\newrobustcmd*\fwd@advancelength@verticalmarginwhole[1]{%
-  \advance\fwd@verticalmarginwhole@length by \csname fwd@#1@length\endcsname\relax%
-}
 
-\newrobustcmd*\fwd@advancelength@freevspace@sub[1]{%
-  \advance\dimen@ by -\csname fwd@#1@length\endcsname\relax%
-}
 
-\newrobustcmd*\fwd@advancelength@freevspace@add[1]{%
-  \advance\dimen@ by \csname fwd@#1@length\endcsname\relax%
-}
 %%==================================================%%
 %%====================Reset changes=================%%
 %%==================================================%%
@@ -342,9 +330,9 @@
   \else
    \fwd@freepagevspace%
    \ifdimless{\fwd@freevspace@length}{2\baselineskip}
-             {\fwd@PackageInfo{Not enough space on this page}%die Seite hat nur noch minimal Platz
+             {\PackageInfo{fullwidth}{Not enough space on this page}%die Seite hat nur noch minimal Platz
               \vfill\eject%
-              \def\fwd@reserved@a{\fwd@put@frame}%
+              \def\fwd@reserved@a{\fwd@putframe}%
              }{%
                %Hier berechnung Box-Inhalt+Rahmen oben und unten
 %              \setlength{\fwd@verticalmarginwhole@length}{\dimexpr\ht\@tempboxa+\dp\@tempboxa\relax}%
@@ -352,33 +340,28 @@
                 {%passt auf Seite%
                   \begingroup
                    \iftoggle{fwd:checktwoside}{\fwd@@setzref}{}%
-                    %
+                     \leftline{\hspace*{\fwd@leftmargin@length}\box\@tempboxa}%%
                   \endgroup
                  \let\fwd@reserved@a\relax}%
-                {\def\fwd@reserved@a{\fwd@put@frame@i}}%passt nicht auf Seite
+                {\def\fwd@reserved@a{\fwd@putframe@i}}%passt nicht auf Seite
              }%
   \fi
  \fwd@reserved@a%
 }
 
-\def\fwd@put@frame@i{%Box muss gesplittet werden -- Ausgabe der ersten Teilbox
-      %Berechnung der Splittgroesse -- Linien und Abstand oben
-      \fwd@freepagevspace%
-      \dimen@=\the\fwd@freevspace@length%
-      \dimen@i=\fwd@innertopmargin@length%
-      \advance\dimen@i by \fwd@linewidth@length%
-      \advance\dimen@i by 2\baselineskip%
-      \ifdim\dimen@<\dimen@i\relax
-           \hrule \@height\z@ \@width\hsize%
-           \vfill\eject%
-           \def\fwd@reserved@a{\fwd@put@frame}%
-      \else%
-      \fwd@dolist{\fwd@advancelength@freevspace@sub}{%
-                outerlinewidth,middlelinewidth,innerlinewidth,%
-                innertopmargin,splitbottomskip}%
-      \ifbool{fwd@topline}{}{\advance\dimen@ by \fwd@middlelinewidth@length}%
+\def\fwd@putframe@i{%Box muss gesplittet werden -- Ausgabe der ersten Teilbox
+   %Berechnung der Splittgroesse -- Linien und Abstand oben
+   \fwd@freepagevspace%
+   \dimen@=\the\fwd@freevspace@length%
+   \dimen@i=\fwd@innertopmargin@length%
+   \advance\dimen@i by 2\baselineskip%
+   \ifdim\dimen@<\dimen@i\relax
+      \hrule \@height\z@ \@width\hsize%
+      \vfill\eject%
+      \def\fwd@reserved@a{\fwd@putframe}%
+   \else%
       \ifdimless{\ht\@tempboxa+\dp\@tempboxa}{\dimen@}%
-         {\fwd@PackageWarning{You got a bad break\MessageBreak
+         {\PackageWarning{fullwidth}{You got a bad break\MessageBreak
                              you have to change it manually\MessageBreak
                              by changing the text, the space\MessageBreak
                              or something else}%
@@ -389,7 +372,7 @@
          \setbox\tw@\vsplit\@tempboxa to \dimen@
          \setbox\tw@\vbox{\unvbox\tw@}%needed?
          \ifdimgreater{\ht\tw@+\dp\tw@}{\dimen@}{%Falsch gesplittet
-            \fwd@PackageInfo{Box was splittet wrong\MessageBreak}%
+            \PackageInfo{fullwidth}{Box was splittet wrong\MessageBreak}%
              \dimen@i=\dimen@
               \advance\dimen@ by -\ht\tw@
               \advance\dimen@ by -\dp\tw@
@@ -404,45 +387,41 @@
              }{}%
          \setbox\@tempboxa\vbox{\unvbox\@tempboxa}%PRUEFEN!!!!
          \ifvoid\@tempboxa
-           \fwd@PackageWarning{You got a bad break\MessageBreak
+           \PackageWarning{fullwidth}{You got a bad break\MessageBreak
                                because the splittet box is empty\MessageBreak
                                You have to change the page settings\MessageBreak
                                like enlargethispage or something else}%
            \setbox\@tempboxa\vbox{\box\tw@\box\@tempboxa}%
-           \def\fwd@reserved@a{\fwd@put@frame}%
+           \def\fwd@reserved@a{\fwd@putframe}%
          \fi
          \ifvoid\tw@%%pruefe, ob erste Box leer ist
           \hrule \@height\z@ \@width\hsize
           \vfill\eject%  
-             \def\fwd@reserved@a{\fwd@put@frame}%
+             \def\fwd@reserved@a{\fwd@putframe}%
          \else
           \ifdimequal{\ht\tw@}{0pt}%
             {\hrule \@height\z@ \@width\hsize%
              \vfill\eject%
              \setbox\@tempboxa\vbox{\unvbox\tw@\unvbox\@tempboxa}
-             \def\fwd@reserved@a{\fwd@put@frame}%
+             \def\fwd@reserved@a{\fwd@putframe}%
             }%
             {%
             \begingroup
                \iftoggle{fwd:checktwoside}{\fwd@@setzref}{}%
-               \fwd@putbox@first%%%Groesse des Splittens passt
+               \leftline{\hspace*{\fwd@leftmargin@length}\box\tw@}%%%%Groesse des Splittens passt
             \endgroup
             \hrule \@height\z@ \@width\hsize
             \vfill\eject%
-            \def\fwd@reserved@a{\fwd@put@frame@ii}%
+            \def\fwd@reserved@a{\fwd@putframe@ii}%
             }%
          \fi% 
       \fi%
 \fwd@reserved@a%
 }
 
-\def\fwd@put@frame@ii{%Ausgabe der mittleren Box(en) wenn vorhanden
+\def\fwd@putframe@ii{%Ausgabe der mittleren Box(en) wenn vorhanden
   \setlength{\fwd@freevspace@length}{\vsize}%
   \setlength{\dimen@}{\dimexpr\ht\@tempboxa+\dp\@tempboxa\relax}%
-  \fwd@dolist{\fwd@advancelength@freevspace@add}{%
-                outerlinewidth,middlelinewidth,innerlinewidth,%
-                innerbottommargin}%%%Addition der Linien unten
-   \ifbool{fwd@bottomline}{}{\advance\dimen@ by -\fwd@middlelinewidth@length\relax}%
    \ifdimgreater{\dimen@}{\fwd@freevspace@length}%
     {%
         \advance\fwd@freevspace@length by -\fwd@splitbottomskip@length
@@ -457,11 +436,11 @@
          \fi%
         \begingroup
            \iftoggle{fwd:checktwoside}{\fwd@@setzref}{}%
-           \fwd@putbox@middle%
+           \leftline{\hspace*{\fwd@leftmargin@length}\box\tw@}%%
         \endgroup
         \hrule \@height\z@ \@width\hsize
         \vfill\eject
-        \def\fwd@reserved@a{\fwd@put@frame@ii}%
+        \def\fwd@reserved@a{\fwd@putframe@ii}%
      }%Hier die Ausgabe der mittleren Box
      {\ifvoid\@tempboxa
            \fwd@PackageWarning{You got a bad break\MessageBreak
@@ -470,7 +449,7 @@
       \fi%
       \begingroup
           \iftoggle{fwd:checktwoside}{\fwd@@setzref}{}%
-          \fwd@putbox@second%
+          \leftline{\hspace*{\fwd@leftmargin@length}\box\@tempboxa}%%
       \endgroup
       \let\fwd@reserved@a\relax%
      }%Hier kommt die Ausgabe der letzten Box
