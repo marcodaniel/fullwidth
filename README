@@ -1,6 +1,11 @@
 This package provides the environment fullwidth. 
 The package was inspired by a question of stack exchange
 
+This package provides the environment fullwidth which allows to
+set the left and right margins in a very simple way. It also allows page breaks.
+If you are using the twoside mode you can set the inner and outer margins.
+
+see also: http://tex.stackexchange.com/questions/34368/how-to-switch-between-two-margin-sizes
 
 Author's name: Marco Daniel 
 version: 0.1a
