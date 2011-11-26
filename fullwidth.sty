@@ -18,8 +18,7 @@
 \ProvidesPackage{fullwidth}[\fwddate \fwdversion: \fwdpackagename]
 
 %%Benoetigte Pakete
-\RequirePackage{kvoptions}
-\RequirePackage{etoolbox}
+\RequirePackage{kvoptions,etoolbox}
 \RequirePackage{zref-abspage}
 \SetupKeyvalOptions{family=fwd,prefix=fwd@}
 %%Schleifenmakro zur Optioneneingabe
@@ -50,9 +49,9 @@
    {innertopmargin==0.4\baselineskip},%
    {innerbottommargin==0.4\baselineskip},%
    {splittopskip==\z@},%
-   {splitbottomskip==\z@},%
-   {outermargin==-999pt},%
-   {innermargin==-999pt},%
+   {splitbottomskip==\topsep},%
+   {outermargin==\z@},%
+   {innermargin==\z@},%
    {footenotedistance==\medskipamount},
 }
 
@@ -68,7 +67,7 @@
         \vskip\z@skip % hide the previous |\vskip| from |\addvspace|
       \endgroup%
 }
-
+\DeclareBoolOption[true]{twosidemode}
 \DeclareBoolOption{nobreak}
 \DeclareBoolOption{footnoteinside}
 
@@ -94,11 +93,6 @@
 \patchcmd\endfwd@trivlist\@endparenv\fwd@endparenv{}{}
 \def\fwd@endparenv{%
   \addpenalty\@endparpenalty\addvspace\fwd@skipbelow@length\@endpetrue}
-
-\newrobustcmd*\fwd@makebox[2][\fwd@width@length]{%
- \noindent\makebox[#1][l]{#2}%
-}
-
 
 \newrobustcmd*\fwd@footnoterule{%
     \kern0\p@%
@@ -170,7 +164,7 @@
      \let\partopsep\z@%
    \expandafter\endgroup%   
    \begin{fwd@trivlist}\item\relax%
-   \fwd@horizontalmargin@equation%
+   \hsize=\fwd@width@length\relax%
    \fwd@footnoteinput%
    \begin{fwd@lrbox}{\@tempboxa}%
  }
@@ -200,28 +194,13 @@
 %%==================================================%%
 %%================== Twoside-Modus =================%%
 %%==================================================%%
-\newtoggle{fwd:checktwoside}
-\settoggle{fwd:checktwoside}{false}
 \newrobustcmd*\fwd@twoside@checklength{%
  \if@twoside
-   \ifboolexpr{ test {\ifdimequal{\fwd@outermargin@length}{-999pt}}
-               and
-               test {\ifdimequal{\fwd@innermargin@length}{-999pt}}
-              }%
-              {%
-              \PackageInfo{fullwidth}{You haven't set the outermargin/innermargin^^
-                                 fullwidth will use leftmargin/rightmargin}%
-              \settoggle{fwd:checktwoside}{false}%
-              }%
-              {\settoggle{fwd:checktwoside}{true}}%
-   \iftoggle{fwd:checktwoside}{%
-      \ifdimequal{\fwd@outermargin@length}{-999pt}%
-         {\setlength\fwd@rightmargin@length{\z@}}%
-         {\setlength\fwd@rightmargin@length{\fwd@outermargin@length}}%
-     \ifdimequal{\fwd@innermargin@length}{-999pt}%
-         {\setlength\fwd@leftmargin@length{\z@}}%
-         {\setlength\fwd@leftmargin@length{\fwd@innermargin@length}}%
-   }{}%
+     \setlength\fwd@rightmargin@length{\fwd@outermargin@length}%
+     \setlength\fwd@leftmargin@length{\fwd@innermargin@length}%
+%     \booltrue{fwd@twosidemode}%
+ \else
+     \boolfalse{fwd@twosidemode}%
  \fi%
 }
 
@@ -245,20 +224,12 @@
 }
 
 \newrobustcmd*\fwd@pageisodd{%
-      \ifdimequal{\fwd@outermargin@length}{-999pt}%
-         {\setlength\fwd@rightmargin@length{\z@}}%
-         {\setlength\fwd@rightmargin@length{\fwd@outermargin@length}}%
-     \ifdimequal{\fwd@innermargin@length}{-999pt}%
-         {\setlength\fwd@leftmargin@length{\z@}}%
-         {\setlength\fwd@leftmargin@length{\fwd@innermargin@length}}%
+    \setlength\fwd@rightmargin@length{\fwd@outermargin@length}%
+    \setlength\fwd@leftmargin@length{\fwd@innermargin@length}%
 }
 \newrobustcmd*\fwd@pageiseven{%
-      \ifdimequal{\fwd@outermargin@length}{-999pt}%
-         {\setlength\fwd@leftmargin@length{\z@}}%
-         {\setlength\fwd@leftmargin@length{\fwd@outermargin@length}}%
-     \ifdimequal{\fwd@innermargin@length}{-999pt}%
-         {\setlength\fwd@rightmargin@length{\z@}}%
-         {\setlength\fwd@rightmargin@length{\fwd@innermargin@length}}%
+    \setlength\fwd@leftmargin@length{\fwd@outermargin@length}%
+    \setlength\fwd@rightmargin@length{\fwd@innermargin@length}%
 }
 
 \newrobustcmd*\fwd@@setzref{\fwd@zref@label\if@fwd@pageodd}
@@ -279,45 +250,12 @@
           }%
 }
 
-%%==================================================%%
-%================= Breite der Box =================%%
-%%==================================================%%
-\newrobustcmd*\fwd@advancelength@orizontalmargin@add[1]{%
-  \advance\fwd@horizontalspaceofbox by -\csname fwd@#1@length\endcsname\relax%
-}
-
-
-\newlength\fwd@pagewidth
-
-\newlength\fwd@horizontalspaceofbox
-\newrobustcmd*\fwd@horizontalmargin@equation{%
-    \setlength{\fwd@horizontalspaceofbox}{\fwd@width@length}%
-    \ifdimless{\fwd@horizontalspaceofbox}{3cm}{\PackageWarning{You have only a width of 3cm\MessageBreak}}{}%
-    \hsize=\fwd@horizontalspaceofbox%
-}
-
-
-
-%%==================================================%%
-%%====================Reset changes=================%%
-%%==================================================%%
-%\protected@edef\fwd@reset{\boxmaxdepth\the\boxmaxdepth 
-%                          \splittopskip\the\splittopskip}%
-
-
-%%==================================================%%
-%%===========Ausgaberoutine -> Berechnung===========%%
-%%==================================================%%
-
 \newrobustcmd*\fwd@standalone{\relax%
    \ifvoid\@tempboxa\relax
       \PackageWarning{fullwidth}{The environment is empty\MessageBreak}%
       \let\fwd@reserved@a\relax%
    \else
-      %Hier berechnung Box-Inhalt+ oben und unten
-      \def\fwd@reserved@a{
-           \leftline{\hspace*{\fwd@leftmargin@length}\box\@tempboxa}%
-           }%
+      \def\fwd@reserved@a{\fwd@putbox@tempboxa}%
    \fi
    \fwd@reserved@a%
 }
@@ -334,13 +272,11 @@
               \vfill\eject%
               \def\fwd@reserved@a{\fwd@putframe}%
              }{%
-               %Hier berechnung Box-Inhalt+Rahmen oben und unten
-%              \setlength{\fwd@verticalmarginwhole@length}{\dimexpr\ht\@tempboxa+\dp\@tempboxa\relax}%
               \ifdimless{\ht\@tempboxa+\dp\@tempboxa}{\fwd@freevspace@length}%
                 {%passt auf Seite%
                   \begingroup
-                   \iftoggle{fwd:checktwoside}{\fwd@@setzref}{}%
-                     \leftline{\hspace*{\fwd@leftmargin@length}\box\@tempboxa}%%
+                   \ifbool{fwd@twosidemode}{\fwd@@setzref}{}%
+                     \fwd@putbox@tempboxa%%
                   \endgroup
                  \let\fwd@reserved@a\relax}%
                 {\def\fwd@reserved@a{\fwd@putframe@i}}%passt nicht auf Seite
@@ -350,7 +286,7 @@
 }
 
 \def\fwd@putframe@i{%Box muss gesplittet werden -- Ausgabe der ersten Teilbox
-   %Berechnung der Splittgroesse -- Linien und Abstand oben
+   %Berechnung der Splittgroesse Abstand oben
    \fwd@freepagevspace%
    \dimen@=\the\fwd@freevspace@length%
    \dimen@i=\fwd@innertopmargin@length%
@@ -407,8 +343,8 @@
             }%
             {%
             \begingroup
-               \iftoggle{fwd:checktwoside}{\fwd@@setzref}{}%
-               \leftline{\hspace*{\fwd@leftmargin@length}\box\tw@}%%%%Groesse des Splittens passt
+               \ifbool{fwd@twosidemode}{\fwd@@setzref}{}%
+               \fwd@putbox@tw@%Groesse des Splittens passt
             \endgroup
             \hrule \@height\z@ \@width\hsize
             \vfill\eject%
@@ -435,8 +371,8 @@
                                You have to change the settings}%
          \fi%
         \begingroup
-           \iftoggle{fwd:checktwoside}{\fwd@@setzref}{}%
-           \leftline{\hspace*{\fwd@leftmargin@length}\box\tw@}%%
+           \ifbool{fwd@twosidemode}{\fwd@@setzref}{}%
+           \fwd@putbox@tw@%
         \endgroup
         \hrule \@height\z@ \@width\hsize
         \vfill\eject
@@ -448,12 +384,18 @@
                                You have to change the settings}%
       \fi%
       \begingroup
-          \iftoggle{fwd:checktwoside}{\fwd@@setzref}{}%
-          \leftline{\hspace*{\fwd@leftmargin@length}\box\@tempboxa}%%
+          \ifbool{fwd@twosidemode}{\fwd@@setzref}{}%
+          \fwd@putbox@tempboxa%
       \endgroup
       \let\fwd@reserved@a\relax%
      }%Hier kommt die Ausgabe der letzten Box
   \fwd@reserved@a%
 }
+
+
+\newrobustcmd\fwd@leftline[1]{\leftline{\hspace*{\fwd@leftmargin@length}#1}}%Keine Modifikation
+
+\newrobustcmd\fwd@putbox@tempboxa{\fwd@leftline{\box\@tempboxa}}
+\newrobustcmd\fwd@putbox@tw@{\fwd@leftline{\box\tw@}}
 
 \endinput
