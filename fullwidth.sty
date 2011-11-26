@@ -152,8 +152,11 @@
 %\fwd@standalone%
 \fwd@reserved@a%
 }
-\newcommand\fullwidth{}
-\def\fullwidth#1{%
+
+
+\def\fullwidth{\@ifnextchar[\fullwidth@i\fullwidth@ii}%
+\def\fullwidth@ii{\fullwidth@i[]}%
+\def\fullwidth@i[#1]{% default-Umgebung
   \begingroup
   \fullwidthsetup{#1}%%
    \fwd@twoside@checklength%
