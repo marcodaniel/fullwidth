@@ -1,0 +1,128 @@
+%Documenation of the package fullwidth
+\setcounter{errorcontextlines}{999}
+\documentclass[parskip=false,english,11pt]{ltxmdf}
+\makeatletter
+\renewcommand\tableofcontents{%
+\setcounter{tocdepth}{1}%
+ \begin{multicols}{2}[\centering\textbf{\sffamily\Large\contentsname}]
+        \@starttoc{toc}
+ \end{multicols}
+}
+\ifoot{}
+\makeatother
+\usepackage{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lipsum}
+\usepackage[T1,altbullet]{lucidabr}
+\usepackage[scaled=0.82]{beramono}  
+
+\usepackage{fullwidth}
+%\fullwidthsetup
+
+\def\fwdname{\texttt{fullwidth}\xspace}
+\title{The \fwdname package}
+\subtitle{Environment with adjustable margins for onside and twoside documents}
+\author{\href{mailto:marco.daniel@mada-nada.de}{Marco Daniel}%
+       \footnote{Sorry for bad English.}}
+\version{\fwdversion}
+\date{\today}
+\introduction{The packages provide the environment \fwdname which allows to set the left and right margins very simple. It also allows page breas. If you are using the \texttt{twoside}-mode you can set the margins  of the inner and outer. \par
+By defining new environments the user may choose between several individual designs.%
+}
+
+
+\begin{document}
+\maketitle
+
+\section{Motivation}
+The package is inspired by many question on \href{http://tex.stackexchange.com/}{tex stackexchange}. For example in the question \href{http://tex.stackexchange.com/questions/34368/how-to-switch-between-two-margin-sizes}{\emph{How to switch between two margin sizes?}} I solved the problem by using the package \mdname. The package wasn't designed for such a environment. So I decided to create the new package which based on the algorithm of \mdname.
+
+
+
+\section{Syntax}\label{sec:syntax}
+The package itself loads the packages \mdpack{kvoptions}, \mdpack{etoolbox}.
+
+Load the package as usual:
+\begin{mdexample}
+ \usepackage[<GLOBAL OPTIONS>]{fullwidth}
+\end{mdexample}
+
+The package defines only one environment with the following syntax:
+\begin{mdexample}
+ \begin{fullwidth}[<LOCAL OPTIONS>]
+    <CONTENT>
+ \end{fullwidth}
+\end{mdexample}
+
+
+\minisec{Autodetecting floats}
+I added a detection of \mdpack{float} or \mdpack{minipage} environments. If you use \fwdname in such an environment \fwdname will use the option \mdoption{nobreak} automaticly. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\section{Options}
+The package provides various options to manipulate frames. In the following section all options are listed. Some internal macros which can be manipulated are not shown in this documentation.
+\mdDescribeCmd{fullwidthsetup}The listed option can also be set via \mdcommand{fullwidthsetup}.
+
+\subsection{Options with lengths}
+
+All lengths will be evaluated by the \eTeX-commands \mdcommand{dimexpr}.
+
+I know that the predefined lengths are not well prepared. Maybe I will change it later.
+
+
+\mdDescribeMacro[0pt]{width} Sets the width of the whole \fwdname environment.
+
+\mdDescribeMacro[\textbackslash topskip]{skipabove} Sets an additional skip above the frame.
+\mdDescribeMacro[\textbackslash topskip]{skipbelow} Sets an additional skip below the frame.
+
+\mdDescribeMacro[0pt]{leftmargin} Sets the length of the left margin of the environment.
+\mdDescribeMacro[0pt]{rightmargin} Sets the length of the right margin of the environment.
+
+\mdDescribeMacro[.4\textbackslash baselineskip]{innertopmargin} Sets the length of the inner top margin of the environment.
+\mdDescribeMacro[.4\textbackslash baselineskip]{innerbottommargin} Sets the length of the inner bottom margin of the environment.
+
+\mdDescribeMacro[0pt]{outermargin} Sets the length of the outer margin. This option is only avaidable in \texttt{twoside}-mode.
+\mdDescribeMacro[0pt]{innermargin} Sets the length of the inner margin. This option is only avaidable in \texttt{twoside}-mode.
+
+
+\mdDescribeMacro[\textbackslash topsep]{splittopskip} Sets the length of the skip above the split part of the environment.
+\mdDescribeMacro[0pt]{splitbottomskip} Sets the length of the skip below the split part of the environment.
+
+
+\subsection{General options}\label{genopt}
+
+\mdDescribeMacro[true]{twosidemode} The package detected the \mdcommand{twoside} mode and uses \mdoption{innermargin} and \mdoption{outermagin} default. If you don't this you can use this option.
+
+\mdDescribeMacro[0pt]{needspace} Sometimes it is useful to set a minimum height before the environment should be splitted. For such cases you can use \mdoption{needspace}. The option requires a length which sets the minimum height before a frame will be splitted.
+
+\subsection{Footnotes}
+Inside the environment you can use the command \mdcommand{footnote} as usual. \mdname uses the syntax of environment \mdpack{minipage} with the same counter.
+
+Every footnote text will be collected inside a box and will be displayed at the end of the environment \fwdname. 
+
+\mdDescribeMacro[\mbox{} \mdcommand{bigskipamount}]{footnotedistance} The length is the distance between the end of the enthronement \fwdname and the displaying of the \mdcommand{footnoterule}.
+
+%\mdDescribeMacro[true]{footnoteinside} The position of the footnotes can be changed with the option \mdoption{footnoteinside}. The footnotes will be displayed at the end of the environment but you can decide whether the output is inside \fwdname or after.
+%
+%\vskip\baselineskip
+%\noindent\textbf{Note}\qquad  The output of the footnotes with the option \mdoption{footnoteinside=false} are not in a splitted frame. I think it isn't useful because the first line of a new page shouldn't be a footnote.
+
+
+\section{Known Problems}
+ In this section I will collect known problems. In case you encounter any further problems, please
+ drop me an email, \href{mailto:marco.daniel@mada-nada.de}{marco.daniel at mada-nada.de}.
+
+   Do you have any ideas / wishes on further extensions to this package? Please let me know!
+
+\section{Acknowledgements}
+Thanks to the members of \href{http://tex.stackexchange.com/}{tex stackexchange}.
+
+\subsection{Revision history}\label{rev}
+\raggedright
+\minisec{Version 0.1 submitted ???????}
+\begin{itemize*}
+\item first upload to \href{http://dante.ctan.org/upload}{CTAN}
+\end{itemize*}
+\end{document}
