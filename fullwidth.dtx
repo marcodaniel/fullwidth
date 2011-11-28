@@ -1,0 +1,811 @@
+% \iffalse meta-comment
+% !TEX program = pdfLaTeX
+%<*internal>
+\iffalse
+%</internal>
+%<*readme>
+================================================================
+
+fullwidth --- adjustbale margins
+version 0.1
+
+Released under the LaTeX Project Public License v1.3c or later
+See http://www.latex-project.org/lppl.txt
+----------------------------------------------------------------
+
+The package provides the environment fullwidth with ....
+
+================================================================
+%</readme>
+%<*internal>
+\fi
+\def\nameofplainTeX{plain}
+\ifx\fmtname\nameofplainTeX\else
+  \expandafter\begingroup
+\fi
+%</internal>
+%<*install>
+\input docstrip.tex
+\keepsilent
+\askforoverwritefalse
+\preamble
+----------------------------------------------------------------
+fullwidth --- adjustbale margins
+version 0.1
+
+Released under the LaTeX Project Public License v1.3c or later
+See http://www.latex-project.org/lppl.txt
+----------------------------------------------------------------
+
+\endpreamble
+\postamble
+================================================================
+Copyright (C) 2011 by Marco Daniel
+
+This work may be distributed and/or modified under the
+conditions of the LaTeX Project Public License (LPPL), either
+version 1.3c of this license or (at your option) any later
+version. The latest version of this license is in the file:
+
+http://www.latex-project.org/lppl.txt
+
+This work is "maintained" (as per LPPL maintenance status) by
+Marco Daniel.
+
+This work consists of the file fullwidth.dtx
+and the derived files fullwidth.ins,
+                                fullwidth.pdf and
+                                fullwidth.sty.
+================================================================
+\endpostamble
+\usedir{tex/latex/fullwidth}
+\generate{\file{fullwidth.sty}{\from{fullwidth.dtx}{package}}}
+%</install>
+%<install>\endbatchfile
+%<*internal>
+\usedir{source/latex/fullwidth}
+\generate{\file{fullwidth.ins}{\from{fullwidth.dtx}{install}}}
+\nopreamble\nopostamble
+\usedir{doc/latex/fullwidth}
+\generate{\file{README.txt}{\from{fullwidth.dtx}{readme}}}
+\ifx\fmtname\nameofplainTeX
+  \expandafter\endbatchfile
+\else
+  \expandafter\endgroup
+\fi
+%</internal>
+%<*driver>
+\documentclass[parskip=false,english,11pt]{ltxmdf}
+\usepackage{doc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{fullwidth}
+\usepackage[numbered]{hypdoc}
+\makeatletter
+\renewcommand\tableofcontents{%
+  \setcounter{tocdepth}{1}%
+  \begin{multicols}{2}[\centering\textbf{\sffamily\Large\contentsname}]%
+    \@starttoc{toc}
+  \end{multicols}
+}
+\ifoot{}
+\makeatother
+\usepackage{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lipsum}
+%\usepackage[T1,altbullet]{lucidabr}
+\usepackage[scaled=0.82]{beramono}
+
+\usepackage{fullwidth}
+%\fullwidthsetup
+
+\def\fwdname{\texttt{fullwidth}\xspace}
+\introduction{This package provides the environment \fwdname which allows to set the left and right margins in a very simple way. It also allows page breaks. If you are using the \texttt{twoside} mode you can set the inner and outer margins. \par
+By defining new environments the user may choose between several individual designs.%
+}
+
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+  \DocInput{fullwidth.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \GetFileInfo{fullwidth.sty}
+%
+% \DoNotIndex{\newrobustcmd,\DeclareBoolOption,\DeclareListParser,\deflength}
+% \DoNotIndex{\z@,\@ne,\@M}
+% \DoNotIndex{\define@key}
+% \DoNotIndex{\@nil,\dimen@,\dimen@i}
+% \DoNotIndex{\@mpfn,\@mpfootins,\@mpfootnotetext,\c@mpfootnote}
+% \DoNotIndex{\advance,\begingroup,\ifx,\fi,\else,\@plus,\@height,\@width,\dp,\ht,\wd}
+% \DoNotIndex{\closeout,\day,\def,\edef,\else,\empty,\endgroup,\csname,\endcsname,\endinput}
+%
+%
+%
+%
+% \title{^^A
+% \textsf{fullwidth} --- description text\thanks{^^A
+% This file describes version \fileversion, last revised \filedate.^^A
+% }^^A
+% }
+% \author{^^A
+% Marco Daniel^^A
+% }
+% \date{Released \filedate}
+%
+% \maketitle
+%
+% \changes{v0.1}{2011/11/25}{First public release}
+%
+%
+% \section{Motivation}
+% The package is inspired by many questions on \href{http://tex.stackexchange.com/}
+% {tex stackexchange}. For example in the question
+% \href{http://tex.stackexchange.com/questions/34368/how-to-switch-between-two-margin-sizes}^^A
+% {\emph{How to switch between two margin sizes?}} I solved the problem by using
+% the package \mdname. However, since the package wasn't designed for such a
+% environment, I decided to create a new package based on the algorithm of \mdname.
+%
+%
+%
+% \section{Syntax}\label{sec:syntax}
+% The package itself loads the packages \mdpack{kvoptions} and \mdpack{etoolbox}.
+%
+% Load the package as usual:
+% \begin{mdexample}
+% \usepackage[<GLOBAL OPTIONS>]{fullwidth}
+% \end{mdexample}
+%
+% The package defines only one environment with the following syntax:
+% \begin{mdexample}
+% \begin{fullwidth}[<LOCAL OPTIONS>]
+% <CONTENT>
+% \end{fullwidth}
+% \end{mdexample}
+%
+%
+% \minisec{Autodetecting floats}
+% I added a detection of \mdpack{float} and \mdpack{minipage} environments.
+% If \fwdname would be used within such an environment, \fwdname it would
+% automatically use the option \mdoption{nobreak}.
+%
+%
+% %%%%%%%%%%%%%%%%%%%%%%%
+% \section{Options}
+% The package provides various options for manipulating frames. All options are
+% listed in the following section. Some internal macros are not shown in this
+% documentation, though they can be manipulated.
+% \mdDescribeCmd{fullwidthsetup}The listed option can also be set via \mdcommand{fullwidthsetup}.
+%
+% \subsection{Options with lengths}
+%
+% All lengths will be evaluated by the \eTeX-command \mdcommand{dimexpr}.
+%
+% I know that the predefined lengths are not well prepared. Maybe I will change it later.
+%
+% \mdDescribeMacro[0pt]{width} Sets the width of the whole \fwdname environment.
+%
+% \mdDescribeMacro[\textbackslash topskip]{skipabove}
+% Sets an additional skip above the frame.
+% \mdDescribeMacro[\textbackslash topskip]{skipbelow}
+% Sets an additional skip below the frame.
+%
+% \mdDescribeMacro[0pt]{leftmargin}
+% Sets the length of the left margin of the environment.
+% \mdDescribeMacro[0pt]{rightmargin}
+% Sets the length of the right margin of the environment.
+%
+% \mdDescribeMacro[.4\textbackslash baselineskip]{innertopmargin}
+% Sets the length of the inner top margin of the environment.
+% \mdDescribeMacro[.4\textbackslash baselineskip]{innerbottommargin}
+% Sets the length of the inner bottom margin of the environment.
+%
+% \mdDescribeMacro[0pt]{outermargin}
+% Sets the length of the outer margin. This option is only avaidable in \texttt{twoside} mode.
+% \mdDescribeMacro[0pt]{innermargin}
+% Sets the length of the inner margin. This option is only avaidable in \texttt{twoside} mode.
+%
+%
+% \mdDescribeMacro[\textbackslash topsep]{splittopskip}
+% Sets the length of the skip above the split part of the environment.
+% \mdDescribeMacro[0pt]{splitbottomskip}
+% Sets the length of the skip below the split part of the environment.
+%
+%
+% \subsection{General options}\label{genopt}
+%
+% \mdDescribeMacro[true]{twosidemode}
+% The package detects wether \mdcommand{twoside} mode is active and uses \mdoption{innermargin}
+% and \mdoption{outermagin} by default. If you don't know this you can use this option.
+%
+% \mdDescribeMacro[0pt]{needspace}
+% Sometimes it is useful to set a minimum height before the environment should be splitted.
+% For such cases you can use \mdoption{needspace}. The option requires a length which sets
+% the minimum height before a frame will be splitted.
+%
+% \subsection{Footnotes}
+% Inside the environment you can use the command \mdcommand{footnote} as usual.
+% \fwdname uses the syntax of the environment \mdpack{minipage} with the same counter.
+%
+% Every footnote text will be collected inside a box and will be displayed at the end of the environment \fwdname.
+%
+% \mdDescribeMacro[\mbox{} \mdcommand{bigskipamount}]{footnotedistance}
+% The length is the distance between the end of the environment \fwdname and
+% the displaying of the \mdcommand{footnoterule}.
+%
+% %\mdDescribeMacro[true]{footnoteinside}
+% % The position of the footnotes can be changed with the option \mdoption{footnoteinside}.
+% % The footnotes will be displayed at the end of the environment but you can
+% % decide whether the output is inside \fwdname or after.
+% %
+% %\vskip\baselineskip
+% %\noindent\textbf{Note}\qquad The output of the footnotes with the option
+% % \mdoption{footnoteinside=false} are not in a splitted frame. I think it isn't
+% % useful because the first line of a new page shouldn't be a footnote.
+%
+%
+% \section{Known Problems}
+% In this section I will collect known problems. In case you encounter any further problems, please
+% drop me an email, \href{mailto:marco.daniel@mada-nada.de}{marco.daniel at mada-nada.de}.
+%
+% Do you have any ideas / wishes on further extensions to this package? Please let me know!
+%
+% \section{Acknowledgements}
+% Thanks to the members of \href{http://tex.stackexchange.com/}{tex stackexchange}.
+%
+% \section{Revision history}\label{rev}
+% \raggedright
+% \minisec{Version 0.1 submitted ???????}
+% \begin{itemize*}
+% \item first upload to \href{http://dante.ctan.org/upload}{CTAN}
+% \end{itemize*}
+% \clearpage
+% \newgeometry{left=5.5cm}
+% \addto\MacroFont{\color{blue!60!black}}
+% \preto\theCodelineNo{\color{gray}}
+% \lstMakeShortInline[basicstyle=\small\ttfamily\color{blue!60!black}]{|}
+% \setlength\MacroTopsep{10pt}
+%
+% \section{Implementation}\label{implementation}
+%
+% And finally, here's how it all works\ldots
+%
+%\StopEventually{^^A
+% \PrintChanges
+% \PrintIndex
+%}
+%
+% \begin{macrocode}
+%<*package>
+% \end{macrocode}
+%
+% \subsection{Preliminaries}
+% \begin{macrocode}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{fullwidth}[2011/11/25 v0.1 Provides a full-width environment]
+% \end{macrocode}
+%
+% \begin{macrocode}
+\RequirePackage{kvoptions,etoolbox}
+\RequirePackage{zref-abspage}
+\SetupKeyvalOptions{family=fwd,prefix=fwd@}
+% \end{macrocode}
+%
+% \begin{macro}{\fwd@dolist}
+% Create an loop by using the package |etoolbox|. For more details
+% have a look at the documentation of the package.
+% \begin{macrocode}
+\DeclareListParser*{\fwd@dolist}{,}
+% \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\fwd@do@lengthoption}
+% \begin{macro}{\fwd@lengthoption@doubledo}
+% \begin{macro}{\fdw@define@key@length}
+% \begin{macro}{\fdw@define@key@length}
+% In This part all options with length will be defined. Therefor the macro
+% |\fwd@lengthoption@doubledo| defines all length and set the default value.
+% The options will be passed via the macro |\fwd@do@lengthoption|. The macro
+% |\fdw@define@key@length| is only a short form of |define@key|.
+% \begin{macrocode}
+\def\fwd@do@lengthoption#1{%
+  \fwd@lengthoption@doubledo#1\@nil%
+}
+% \end{macrocode}
+% \end{macro}
+%
+% \begin{macrocode}
+\def\fwd@lengthoption@doubledo#1==#2\@nil{%
+  \csdef{fwd@#1}{}%
+  \expandafter\newlength\csname fwd@#1@length\endcsname%
+  \expandafter\deflength\csname fwd@#1@length\endcsname{#2\relax}%
+  \fdw@define@key@length{#1}%
+}
+% \end{macrocode}
+%
+% \begin{macrocode}
+\newrobustcmd*{\fdw@define@key@length}[1]{%
+  \define@key{fwd}{#1}{%
+    \expandafter\deflength\csname fwd@#1@length\endcsname{##1\relax}%
+  }%
+}
+% \end{macrocode}
+%
+% \begin{macrocode}
+\fwd@dolist{\fwd@do@lengthoption}{%
+  {width==\linewidth},%
+  {skipabove==\z@},%
+  {skipbelow==\z@},%
+  {leftmargin==\z@},%
+  {rightmargin==\z@},%
+  {innertopmargin==0.4\baselineskip},%
+  {innerbottommargin==0.4\baselineskip},%
+  {splittopskip==\z@},%
+  {splitbottomskip==\topsep},%
+  {outermargin==\z@},%
+  {innermargin==\z@},%
+  {footenotedistance==\medskipamount},
+}
+% \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{needspace}
+% \begin{macro}{twosidemode, nobreak}
+% Next the definition of the string option |needspace| and
+% the bool option will be provided.
+% \begin{macrocode}
+\define@key{fwd}{needspace}[\z@]{%
+  \begingroup%
+    \setlength{\dimen@}{#1}%
+    \vskip\z@\@plus\dimen@%
+    \penalty -100\vskip\z@\@plus -\dimen@%
+    \vskip\dimen@%
+    \penalty 9999%
+    \vskip -\dimen@%
+    \vskip\z@skip % hide the previous |\vskip| from |\addvspace|
+  \endgroup%
+}
+\DeclareBoolOption[true]{twosidemode}
+\DeclareBoolOption{nobreak}
+\DeclareBoolOption{footnoteinside}
+% \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\fullwidthsetup}
+% Process all defined options and define the short form of |\setkeys{fwd}|
+% \begin{macrocode}
+\ProcessKeyvalOptions*\relax
+\newrobustcmd{\fullwidthsetup}{\setkeys{fwd}}
+% \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{fwd@lrbox}
+% The package saved the contents in a savebox. Therefor the package
+% defines a modified |lrbox| where the lenght |\hsize|, |\columnwidth|,
+% |\textwidth| and |\linewidth| set direct.
+% \begin{macrocode}
+\let\fwd@lrbox\lrbox
+\patchcmd\fwd@lrbox\hbox\vbox{}{}
+\patchcmd\fwd@lrbox\color@setgroup{%
+  \color@setgroup%
+  \hsize=\fwd@width@length%
+  \columnwidth=\hsize%
+  \textwidth=\hsize%
+  \linewidth=\hsize%
+}{}{}
+\def\endfwd@lrbox{\unskip\color@endgroup}
+% \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{fwd@trivlist}
+% The package defines a modified trivlist to use the internal trivlist
+% for the complete |fullwidth| environment.
+% \begin{macrocode}
+\let\fwd@trivlist\trivlist
+\let\endfwd@trivlist\endtrivlist
+\patchcmd\endfwd@trivlist\@endparenv\fwd@endparenv{}{}
+\def\fwd@endparenv{%
+  \addpenalty\@endparpenalty\addvspace\fwd@skipbelow@length\@endpetrue}
+% \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\fwd@footnoterule}
+% The package uses a modified version of the footnote system of a |minipage|.
+% The macro |fwd@footnoterule| represent a small footnote line with a length of
+% 2.6 pt.
+% \begin{macrocode}
+\newrobustcmd*\fwd@footnoterule{%
+  \kern0\p@%
+  \hrule \@width 1in \kern 2.6\p@}
+% \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\fwd@footnoteoutput}
+% Equal to minipage (see \href{http://www.ctan.org/pkg/source2e}{source2e})%
+% with an added length to set the sep between text
+% and footnote. The length is set by the option |footenotedistance|.
+% \begin{macrocode}
+\newrobustcmd*\fwd@footnoteoutput{%
+  \ifvoid\@mpfootins\else
+    \nobreak%
+    \vskip\fwd@footenotedistance@length%
+    \normalcolor%
+    \fwd@footnoterule
+    \unvbox\@mpfootins
+  \fi%
+}
+% \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\fwd@footnoteinput}
+% Save every footnote in a save box do save them. The comment above
+% can be used equal. (source2e)
+% \begin{macrocode}
+\newrobustcmd*\fwd@footnoteinput{%
+  \def\@mpfn{mpfootnote}%
+  \def\thempfn{\thempfootnote}%
+  \c@mpfootnote\z@%
+  \let\@footnotetext\@mpfootnotetext%
+}
+% \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\fwd@detect@output}
+% \begin{macro}{\fwd@standalone}
+% \begin{macro}{\fwd@putframe}
+% To allow pagebreaks the package must check whether the package is inside
+% a non breakable environment like |minipage|, |table| or |figure|. The command
+% |\fwd@detect@output| is used at the beginning of the environment |fullwidth|.
+% If the package is used inside one of them the definition of |\fwd@standalone|
+% is adabted otherwise the definition of |\fwd@putframe|.
+% \begin{macrocode}
+\let\fwd@reserved@a\@empty
+\newrobustcmd*\fwd@detect@output{%
+% \end{macrocode}
+% Test whether the option |nobreak| is set.
+% \begin{macrocode}
+  \iffwd@nobreak
+    \def\fwd@reserved@a{\fwd@standalone}%
+  \else
+    \def\fwd@reserved@a{\fwd@putframe}%
+% \end{macrocode}
+% |\@floatpenalty| is only used inside an float environment
+% ( see \href{http://tex.stackexchange.com/questions/27172/how-can-i-detect-if-im-inside-or-outside-of-a-float-environment}^^A
+% {tex.stackexchange How can I detect if I'm inside or outside of a float environment?}
+% \begin{macrocode}
+    \ifnum\@floatpenalty<0\relax
+      \if@twocolumn%
+        \ifx\@captype\@undefined
+          \def\fwd@reserved@a{\fwd@putframe}%
+        \else
+          \PackageWarning{fullwidth}{fullwidth inside float ^^J
+                              fullwidth uses option nobreak}%
+          \def\fwd@reserved@a{\fwd@standalone}%
+        \fi
+      \else
+        \PackageWarning{fullwidth inside float ^^J
+                             fullwidth uses option nobreak}%
+        \def\fwd@reserved@a{\fwd@standalone}%
+      \fi%
+    \fi%
+% \end{macrocode}
+% |\if@minipage| is true inside a |minipage| environment.
+% \begin{macrocode}
+    \if@minipage%
+      \PackageWarning{fullwidth inside minipage ^^J
+                             fullwidth uses option nobreak}%
+      \def\fwd@reserved@a{\fwd@standalone}%
+    \fi%
+% \end{macrocode}
+% |\ifinner| test for an internal mode (see texbook)
+% \begin{macrocode}
+    \ifinner%
+      \PackageWarning{fullwidth inside a box ^^J
+                            fullwidth uses option nobreak }%
+      \def\fwd@reserved@a{\fwd@standalone}%
+    \fi%
+  \fi%
+  \fwd@reserved@a%
+}
+% \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\fullwidth}
+% \begin{macro}{\fullwidth@ii}
+% \begin{macro}{\fullwidth@i}
+% \begin{macrocode}
+\def\fullwidth{\@ifnextchar[\fullwidth@i\fullwidth@ii}%
+\def\fullwidth@ii{\fullwidth@i[]}%
+\def\fullwidth@i[#1]{% default-Umgebung
+  \begingroup
+  \fullwidthsetup{#1}%%
+  \fwd@twoside@checklength%
+  \let\width\z@%
+  \let\height\z@%
+  \setlength{\topsep}{\fwd@skipabove@length}%
+  \begingroup%
+    \let\partopsep\z@%
+    \expandafter\endgroup%
+  \begin{fwd@trivlist}\item\relax%
+  \hsize=\fwd@width@length\relax%
+  \fwd@footnoteinput%
+  \begin{fwd@lrbox}{\@tempboxa}%
+ }
+% \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macrocode}
+\def\endfullwidth{%
+  \iffwd@footnoteinside%
+    \def\fwd@reserveda{%
+      \fwd@footnoteoutput%
+      \end{fwd@lrbox}%
+      \let\hsize\linewidth
+      \fwd@detect@output%
+    }%
+  \else%
+    \def\fwd@reserveda{%
+      \end{fwd@lrbox}
+      \let\hsize\linewidth
+      \fwd@detect@output%
+      \fwd@footnoteoutput%
+    }%
+  \fi%
+  \fwd@reserveda%
+  \end{fwd@trivlist}%
+  \hrule \@height\z@ \@width\hsize
+  \endgroup%\@endparenv%
+}
+% \end{macrocode}
+%
+% Two-side mode
+% \begin{macrocode}
+\newrobustcmd*\fwd@twoside@checklength{%
+  \if@twoside
+    \setlength\fwd@rightmargin@length{\fwd@outermargin@length}%
+    \setlength\fwd@leftmargin@length{\fwd@innermargin@length}%
+  \else
+    \boolfalse{fwd@twosidemode}%
+  \fi%
+}
+% \end{macrocode}
+%
+% \begin{macrocode}
+\newcounter{fwd@zref@counter}%keine doppelten laebes
+\zref@newprop*{fwd@pagevalue}[0]{\number\value{page}}
+\zref@addprop{\ZREF@mainlist}{fwd@pagevalue}
+% \end{macrocode}
+%
+% \begin{macrocode}
+\newrobustcmd*\fwd@zref@label{%
+  \stepcounter{fwd@zref@counter}%
+  \zref@label{fwd@pagelabel-\number\value{fwd@zref@counter}}%
+}
+% \end{macrocode}
+%
+% \begin{macrocode}
+\newrobustcmd*\if@fwd@pageodd{%
+  \zref@refused{fwd@pagelabel-\the\value{fwd@zref@counter}}%
+  \ifodd\zref@extract{fwd@pagelabel-\the\value{fwd@zref@counter}}{fwd@pagevalue}%
+    \edef\fwd@reserveda{\fwd@pageisodd}%
+  \else
+    \edef\fwd@reserveda{\fwd@pageiseven}%
+  \fi
+  \fwd@reserveda%
+}
+% \end{macrocode}
+%
+% \begin{macrocode}
+\newrobustcmd*\fwd@pageisodd{%
+  \setlength\fwd@rightmargin@length{\fwd@outermargin@length}%
+  \setlength\fwd@leftmargin@length{\fwd@innermargin@length}%
+}
+% \end{macrocode}
+%
+% \begin{macrocode}
+\newrobustcmd*\fwd@pageiseven{%
+  \setlength\fwd@leftmargin@length{\fwd@outermargin@length}%
+  \setlength\fwd@rightmargin@length{\fwd@innermargin@length}%
+}
+% \end{macrocode}
+%
+% \begin{macrocode}
+\newrobustcmd*\fwd@@setzref{\fwd@zref@label\if@fwd@pageodd}
+% \end{macrocode}
+%
+% \begin{macrocode}
+%%==================================================%%
+%%================= Platz auf Seite ================%%
+%%==================================================%%
+\newlength\fwd@freevspace@length
+\newrobustcmd*\fwd@freepagevspace{%
+  \penalty\@M \vskip 2\baselineskip \vskip\height
+  \penalty9999 \vskip -2\baselineskip \vskip-\height
+  \penalty9999
+  \ifdimequal{\pagegoal}{\maxdimen}%
+    {\fwd@freevspace@length\vsize}%
+    {\fwd@freevspace@length=\pagegoal\relax%
+      \advance\fwd@freevspace@length by -\pagetotal\relax%
+    }%
+}
+% \end{macrocode}
+%
+% \begin{macrocode}
+\newrobustcmd*\fwd@standalone{\relax%
+  \ifvoid\@tempboxa\relax
+    \PackageWarning{fullwidth}{The environment is empty\MessageBreak}%
+    \let\fwd@reserved@a\relax%
+  \else
+    \def\fwd@reserved@a{\fwd@putbox@tempboxa}%
+  \fi
+  \fwd@reserved@a%
+}
+% \end{macrocode}
+%
+% \begin{macrocode}
+\def\fwd@putframe{\relax%
+  \ifvoid\@tempboxa\relax
+    \PackageWarning{fullwidth}{The environment is empty\MessageBreak}%
+    \let\fwd@reserved@a\relax%
+  \else
+    \fwd@freepagevspace%
+    \ifdimless{\fwd@freevspace@length}{2\baselineskip}{%
+      \PackageInfo{fullwidth}{Not enough space on this page}%die Seite hat nur noch minimal Platz
+      \vfill\eject%
+      \def\fwd@reserved@a{\fwd@putframe}%
+    }{%
+      \ifdimless{\ht\@tempboxa+\dp\@tempboxa}{\fwd@freevspace@length}{%passt auf Seite%
+        \begingroup
+        \ifbool{fwd@twosidemode}{\fwd@@setzref}{}%
+          \fwd@putbox@tempboxa%%
+          \endgroup
+          \let\fwd@reserved@a\relax%
+      }{%
+        \def\fwd@reserved@a{\fwd@putframe@i}%
+      }%passt nicht auf Seite
+    }%
+  \fi
+  \fwd@reserved@a%
+}
+% \end{macrocode}
+%
+% \begin{macrocode}
+\def\fwd@putframe@i{%Box muss gesplittet werden -- Ausgabe der ersten Teilbox
+  %Berechnung der Splittgroesse Abstand oben
+  \fwd@freepagevspace%
+  \dimen@=\the\fwd@freevspace@length%
+  \dimen@i=\fwd@innertopmargin@length%
+  \advance\dimen@i by 2\baselineskip%
+  \ifdim\dimen@<\dimen@i\relax
+    \hrule \@height\z@ \@width\hsize%
+    \vfill\eject%
+    \def\fwd@reserved@a{\fwd@putframe}%
+  \else%
+    \ifdimless{\ht\@tempboxa+\dp\@tempboxa}{\dimen@}{%
+      \PackageWarning{fullwidth}{You got a bad break\MessageBreak
+                                you have to change it manually\MessageBreak
+                                by changing the text, the space\MessageBreak
+                                or something else}%
+      \advance\dimen@ by -1.8\baselineskip\relax%
+    }{}%
+    \advance\dimen@ by -1pt\relax%Box darf nicht zu Groß werden.
+    \splitmaxdepth\z@ \splittopskip\fwd@splittopskip@length%
+    \setbox\tw@\vsplit\@tempboxa to \dimen@
+    \setbox\tw@\vbox{\unvbox\tw@}%needed?
+    \ifdimgreater{\ht\tw@+\dp\tw@}{\dimen@}{%Falsch gesplittet
+      \PackageInfo{fullwidth}{Box was splittet wrong\MessageBreak}%
+      \dimen@i=\dimen@
+      \advance\dimen@ by -\ht\tw@
+      \advance\dimen@ by -\dp\tw@
+      \advance\dimen@i by 0.5\dimen@
+      \splittopskip\z@%
+      \setbox\@tempboxa\vbox{\unvbox\tw@%
+                                \hrule \@height\dp\strutbox \@width\z@%benoetigt um Tiefe zu haben
+                                \unvbox\@tempboxa}
+      \splittopskip\fwd@splittopskip@length%
+      \setbox\tw@\vsplit\@tempboxa to \dimen@i
+      \setbox\tw@\vbox{\unvbox\tw@}%
+    }{}%
+    \setbox\@tempboxa\vbox{\unvbox\@tempboxa}%PRUEFEN!!!!
+    \ifvoid\@tempboxa
+      \PackageWarning{fullwidth}{You got a bad break\MessageBreak
+                          because the splittet box is empty\MessageBreak
+                          You have to change the page settings\MessageBreak
+                          like enlargethispage or something else}%
+      \setbox\@tempboxa\vbox{\box\tw@\box\@tempboxa}%
+      \def\fwd@reserved@a{\fwd@putframe}%
+    \fi
+    \ifvoid\tw@%%pruefe, ob erste Box leer ist
+      \hrule \@height\z@ \@width\hsize
+      \vfill\eject%
+      \def\fwd@reserved@a{\fwd@putframe}%
+    \else
+      \ifdimequal{\ht\tw@}{0pt}{%
+        \hrule \@height\z@ \@width\hsize%
+        \vfill\eject%
+        \setbox\@tempboxa\vbox{\unvbox\tw@\unvbox\@tempboxa}
+        \def\fwd@reserved@a{\fwd@putframe}%
+      }{%
+        \begingroup
+          \ifbool{fwd@twosidemode}{\fwd@@setzref}{}%
+            \fwd@putbox@tw@%Groesse des Splittens passt
+        \endgroup
+        \hrule \@height\z@ \@width\hsize
+        \vfill\eject%
+        \def\fwd@reserved@a{\fwd@putframe@ii}%
+      }%
+    \fi%
+  \fi%
+  \fwd@reserved@a%
+}
+% \end{macrocode}
+%
+% \begin{macrocode}
+\def\fwd@putframe@ii{%Ausgabe der mittleren Box(en) wenn vorhanden
+  \setlength{\fwd@freevspace@length}{\vsize}%
+  \setlength{\dimen@}{\dimexpr\ht\@tempboxa+\dp\@tempboxa\relax}%
+  \ifdimgreater{\dimen@}{\fwd@freevspace@length}{%
+    \advance\fwd@freevspace@length by -\fwd@splitbottomskip@length
+    \splitmaxdepth\z@ \splittopskip\fwd@splittopskip@length%
+    \setbox\tw@\vsplit\@tempboxa to \fwd@freevspace@length%
+    \setbox\tw@\vbox{\unvbox\tw@}%PRUEFEN!!!
+    \setbox\@tempboxa\vbox{\unvbox\@tempboxa}%PRUEFEN!!!!
+    \ifvoid\@tempboxa\relax%
+      \fwd@PackageWarning{You got a bad break\MessageBreak
+                          because the split box is empty\MessageBreak
+                          You have to change the settings}%
+    \fi%
+    \begingroup
+      \ifbool{fwd@twosidemode}{\fwd@@setzref}{}%
+      \fwd@putbox@tw@%
+    \endgroup
+    \hrule \@height\z@ \@width\hsize
+    \vfill\eject
+    \def\fwd@reserved@a{\fwd@putframe@ii}%
+  }{%Hier die Ausgabe der mittleren Box
+    \ifvoid\@tempboxa
+      \fwd@PackageWarning{You got a bad break\MessageBreak
+                          because the last split box is empty\MessageBreak
+                          You have to change the settings}%
+    \fi%
+    \begingroup
+      \ifbool{fwd@twosidemode}{\fwd@@setzref}{}%
+        \fwd@putbox@tempboxa%
+    \endgroup
+    \let\fwd@reserved@a\relax%
+  }%Hier kommt die Ausgabe der letzten Box
+  \fwd@reserved@a%
+}
+% \end{macrocode}
+%
+% \begin{macrocode}
+\newrobustcmd\fwd@leftline[1]{\leftline{\hspace*{\fwd@leftmargin@length}#1}}%Keine Modifikation
+% \end{macrocode}
+%
+% \begin{macrocode}
+\newrobustcmd\fwd@putbox@tempboxa{\fwd@leftline{\box\@tempboxa}}
+\newrobustcmd\fwd@putbox@tw@{\fwd@leftline{\box\tw@}}
+% \end{macrocode}
+%
+% \begin{macrocode}
+\endinput
+}
+% \end{macrocode}
+%
+% \begin{macrocode}
+%</package>
+% \end{macrocode}
+%\Finale
+
+
