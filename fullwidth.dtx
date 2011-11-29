@@ -45,15 +45,15 @@ Copyright (C) 2011 by Marco Daniel
 This work may be distributed and/or modified under the
 conditions of the LaTeX Project Public License (LPPL), either
 version 1.3c of this license or (at your option) any later
-version. The latest version of this license is in the file:
+version.  The latest version of this license is in the file:
 
 http://www.latex-project.org/lppl.txt
 
 This work is "maintained" (as per LPPL maintenance status) by
 Marco Daniel.
 
-This work consists of the file fullwidth.dtx
-and the derived files fullwidth.ins,
+This work consists of the file  fullwidth.dtx
+and the derived files           fullwidth.ins,
                                 fullwidth.pdf and
                                 fullwidth.sty.
 ================================================================
@@ -128,12 +128,12 @@ By defining new environments the user may choose between several individual desi
 %
 %
 % \title{^^A
-% \textsf{fullwidth} --- description text\thanks{^^A
-% This file describes version \fileversion, last revised \filedate.^^A
-% }^^A
+%   \textsf{fullwidth} --- description text\thanks{^^A
+%     This file describes version \fileversion, last revised \filedate.^^A
+%   }^^A
 % }
 % \author{^^A
-% Marco Daniel^^A
+%   Marco Daniel^^A
 % }
 % \date{Released \filedate}
 %
@@ -147,7 +147,7 @@ By defining new environments the user may choose between several individual desi
 % {tex stackexchange}. For example in the question
 % \href{http://tex.stackexchange.com/questions/34368/how-to-switch-between-two-margin-sizes}^^A
 % {\emph{How to switch between two margin sizes?}} I solved the problem by using
-% the package \mdname. However, since the package wasn't designed for such a
+% the package \mdname. However, since the package wasn't designed for such a 
 % environment, I decided to create a new package based on the algorithm of \mdname.
 %
 %
@@ -157,14 +157,14 @@ By defining new environments the user may choose between several individual desi
 %
 % Load the package as usual:
 % \begin{mdexample}
-% \usepackage[<GLOBAL OPTIONS>]{fullwidth}
+%  \usepackage[<GLOBAL OPTIONS>]{fullwidth}
 % \end{mdexample}
 %
 % The package defines only one environment with the following syntax:
 % \begin{mdexample}
-% \begin{fullwidth}[<LOCAL OPTIONS>]
-% <CONTENT>
-% \end{fullwidth}
+%  \begin{fullwidth}[<LOCAL OPTIONS>]
+%     <CONTENT>
+%  \end{fullwidth}
 % \end{mdexample}
 %
 %
@@ -176,7 +176,7 @@ By defining new environments the user may choose between several individual desi
 %
 % %%%%%%%%%%%%%%%%%%%%%%%
 % \section{Options}
-% The package provides various options for manipulating frames. All options are
+% The package provides various options for manipulating frames. All options are 
 % listed in the following section. Some internal macros are not shown in this
 % documentation, though they can be manipulated.
 % \mdDescribeCmd{fullwidthsetup}The listed option can also be set via \mdcommand{fullwidthsetup}.
@@ -190,63 +190,63 @@ By defining new environments the user may choose between several individual desi
 % \mdDescribeMacro[0pt]{width} Sets the width of the whole \fwdname environment.
 %
 % \mdDescribeMacro[\textbackslash topskip]{skipabove}
-% Sets an additional skip above the frame.
+%   Sets an additional skip above the frame.
 % \mdDescribeMacro[\textbackslash topskip]{skipbelow}
-% Sets an additional skip below the frame.
+%   Sets an additional skip below the frame.
 %
 % \mdDescribeMacro[0pt]{leftmargin}
-% Sets the length of the left margin of the environment.
+%   Sets the length of the left margin of the environment.
 % \mdDescribeMacro[0pt]{rightmargin}
-% Sets the length of the right margin of the environment.
+%   Sets the length of the right margin of the environment.
 %
 % \mdDescribeMacro[.4\textbackslash baselineskip]{innertopmargin}
-% Sets the length of the inner top margin of the environment.
+%   Sets the length of the inner top margin of the environment.
 % \mdDescribeMacro[.4\textbackslash baselineskip]{innerbottommargin}
-% Sets the length of the inner bottom margin of the environment.
+%   Sets the length of the inner bottom margin of the environment.
 %
 % \mdDescribeMacro[0pt]{outermargin}
-% Sets the length of the outer margin. This option is only avaidable in \texttt{twoside} mode.
+%   Sets the length of the outer margin. This option is only avaidable in \texttt{twoside} mode.
 % \mdDescribeMacro[0pt]{innermargin}
-% Sets the length of the inner margin. This option is only avaidable in \texttt{twoside} mode.
+%   Sets the length of the inner margin. This option is only avaidable in \texttt{twoside} mode.
 %
 %
 % \mdDescribeMacro[\textbackslash topsep]{splittopskip}
-% Sets the length of the skip above the split part of the environment.
+%   Sets the length of the skip above the split part of the environment.
 % \mdDescribeMacro[0pt]{splitbottomskip}
-% Sets the length of the skip below the split part of the environment.
+%   Sets the length of the skip below the split part of the environment.
 %
 %
 % \subsection{General options}\label{genopt}
 %
 % \mdDescribeMacro[true]{twosidemode}
-% The package detects wether \mdcommand{twoside} mode is active and uses \mdoption{innermargin}
-% and \mdoption{outermagin} by default. If you don't know this you can use this option.
+%   The package detects wether \mdcommand{twoside} mode is active and uses \mdoption{innermargin}
+%   and \mdoption{outermagin} by default. If you don't know this you can use this option.
 %
 % \mdDescribeMacro[0pt]{needspace}
-% Sometimes it is useful to set a minimum height before the environment should be splitted.
-% For such cases you can use \mdoption{needspace}. The option requires a length which sets
-% the minimum height before a frame will be splitted.
+%   Sometimes it is useful to set a minimum height before the environment should be splitted.
+%   For such cases you can use \mdoption{needspace}. The option requires a length which sets
+%   the minimum height before a frame will be splitted.
 %
 % \subsection{Footnotes}
 % Inside the environment you can use the command \mdcommand{footnote} as usual.
-% \fwdname uses the syntax of the environment \mdpack{minipage} with the same counter.
+%  \fwdname uses the syntax of the environment \mdpack{minipage} with the same counter.
 %
 % Every footnote text will be collected inside a box and will be displayed at the end of the environment \fwdname.
 %
 % \mdDescribeMacro[\mbox{} \mdcommand{bigskipamount}]{footnotedistance}
-% The length is the distance between the end of the environment \fwdname and
-% the displaying of the \mdcommand{footnoterule}.
+%   The length is the distance between the end of the environment \fwdname and
+%   the displaying of the \mdcommand{footnoterule}.
 %
 % %\mdDescribeMacro[true]{footnoteinside}
-% % The position of the footnotes can be changed with the option \mdoption{footnoteinside}.
-% % The footnotes will be displayed at the end of the environment but you can
-% % decide whether the output is inside \fwdname or after.
+% %  The position of the footnotes can be changed with the option \mdoption{footnoteinside}.
+% %   The footnotes will be displayed at the end of the environment but you can
+% %   decide whether the output is inside \fwdname or after.
 % %
 % %\vskip\baselineskip
-% %\noindent\textbf{Note}\qquad The output of the footnotes with the option
-% % \mdoption{footnoteinside=false} are not in a splitted frame. I think it isn't
-% % useful because the first line of a new page shouldn't be a footnote.
-%
+% %\noindent\textbf{Note}\qquad  The output of the footnotes with the option
+% %   \mdoption{footnoteinside=false} are not in a splitted frame. I think it isn't
+% %   useful because the first line of a new page shouldn't be a footnote.
+% 
 %
 % \section{Known Problems}
 % In this section I will collect known problems. In case you encounter any further problems, please
@@ -275,67 +275,67 @@ By defining new environments the user may choose between several individual desi
 % And finally, here's how it all works\ldots
 %
 %\StopEventually{^^A
-% \PrintChanges
-% \PrintIndex
+%  \PrintChanges
+%  \PrintIndex
 %}
 %
-% \begin{macrocode}
+%    \begin{macrocode}
 %<*package>
-% \end{macrocode}
+%    \end{macrocode}
 %
 % \subsection{Preliminaries}
-% \begin{macrocode}
+%    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{fullwidth}[2011/11/25 v0.1 Provides a full-width environment]
-% \end{macrocode}
+%    \end{macrocode}
 %
-% \begin{macrocode}
+%    \begin{macrocode}
 \RequirePackage{kvoptions,etoolbox}
 \RequirePackage{zref-abspage}
 \SetupKeyvalOptions{family=fwd,prefix=fwd@}
-% \end{macrocode}
+%    \end{macrocode}
 %
-% \begin{macro}{\fwd@dolist}
-% Create an loop by using the package |etoolbox|. For more details
-% have a look at the documentation of the package.
-% \begin{macrocode}
+%    \begin{macro}{\fwd@dolist}
+%     Create an loop by using the package |etoolbox|. For more details
+%     have a look at the documentation of the package.
+%    \begin{macrocode}
 \DeclareListParser*{\fwd@dolist}{,}
-% \end{macrocode}
-% \end{macro}
+%    \end{macrocode}
+%    \end{macro}
 %
-% \begin{macro}{\fwd@do@lengthoption}
-% \begin{macro}{\fwd@lengthoption@doubledo}
-% \begin{macro}{\fdw@define@key@length}
-% \begin{macro}{\fdw@define@key@length}
-% In This part all options with length will be defined. Therefor the macro
-% |\fwd@lengthoption@doubledo| defines all length and set the default value.
-% The options will be passed via the macro |\fwd@do@lengthoption|. The macro
-% |\fdw@define@key@length| is only a short form of |define@key|.
-% \begin{macrocode}
+%    \begin{macro}{\fwd@do@lengthoption}
+%    \begin{macro}{\fwd@lengthoption@doubledo}
+%    \begin{macro}{\fdw@define@key@length}
+%    \begin{macro}{\fdw@define@key@length}
+%      In This part all options with length will be defined. Therefor the macro
+%      |\fwd@lengthoption@doubledo| defines all length and set the default value.
+%      The options will be passed via the macro |\fwd@do@lengthoption|. The macro
+%      |\fdw@define@key@length| is only a short form of |define@key|.
+%    \begin{macrocode}
 \def\fwd@do@lengthoption#1{%
   \fwd@lengthoption@doubledo#1\@nil%
 }
-% \end{macrocode}
-% \end{macro}
+%    \end{macrocode}
+%    \end{macro}
 %
-% \begin{macrocode}
+%    \begin{macrocode}
 \def\fwd@lengthoption@doubledo#1==#2\@nil{%
   \csdef{fwd@#1}{}%
   \expandafter\newlength\csname fwd@#1@length\endcsname%
   \expandafter\deflength\csname fwd@#1@length\endcsname{#2\relax}%
   \fdw@define@key@length{#1}%
 }
-% \end{macrocode}
+%    \end{macrocode}
 %
-% \begin{macrocode}
+%    \begin{macrocode}
 \newrobustcmd*{\fdw@define@key@length}[1]{%
   \define@key{fwd}{#1}{%
     \expandafter\deflength\csname fwd@#1@length\endcsname{##1\relax}%
   }%
 }
-% \end{macrocode}
+%    \end{macrocode}
 %
-% \begin{macrocode}
+%    \begin{macrocode}
 \fwd@dolist{\fwd@do@lengthoption}{%
   {width==\linewidth},%
   {skipabove==\z@},%
@@ -350,16 +350,16 @@ By defining new environments the user may choose between several individual desi
   {innermargin==\z@},%
   {footenotedistance==\medskipamount},
 }
-% \end{macrocode}
-% \end{macro}
-% \end{macro}
-% \end{macro}
+%    \end{macrocode}
+%    \end{macro}
+%    \end{macro}
+%    \end{macro}
 %
-% \begin{macro}{needspace}
-% \begin{macro}{twosidemode, nobreak}
-% Next the definition of the string option |needspace| and
-% the bool option will be provided.
-% \begin{macrocode}
+%    \begin{macro}{needspace}
+%    \begin{macro}{twosidemode, nobreak}
+%     Next the definition of the string option |needspace| and
+%     the bool option will be provided.
+%    \begin{macrocode}
 \define@key{fwd}{needspace}[\z@]{%
   \begingroup%
     \setlength{\dimen@}{#1}%
@@ -374,23 +374,23 @@ By defining new environments the user may choose between several individual desi
 \DeclareBoolOption[true]{twosidemode}
 \DeclareBoolOption{nobreak}
 \DeclareBoolOption{footnoteinside}
-% \end{macrocode}
-% \end{macro}
-% \end{macro}
+%    \end{macrocode}
+%    \end{macro}
+%    \end{macro}
 %
-% \begin{macro}{\fullwidthsetup}
-% Process all defined options and define the short form of |\setkeys{fwd}|
-% \begin{macrocode}
+%    \begin{macro}{\fullwidthsetup}
+%      Process all defined options and define the short form of |\setkeys{fwd}|
+%    \begin{macrocode}
 \ProcessKeyvalOptions*\relax
 \newrobustcmd{\fullwidthsetup}{\setkeys{fwd}}
-% \end{macrocode}
-% \end{macro}
+%    \end{macrocode}
+%    \end{macro}
 %
-% \begin{macro}{fwd@lrbox}
-% The package saved the contents in a savebox. Therefor the package
-% defines a modified |lrbox| where the lenght |\hsize|, |\columnwidth|,
-% |\textwidth| and |\linewidth| set direct.
-% \begin{macrocode}
+%    \begin{macro}{fwd@lrbox}
+%      The package saved the contents in a savebox. Therefor the package
+%      defines a modified |lrbox| where the lenght |\hsize|, |\columnwidth|,
+%      |\textwidth| and |\linewidth| set direct.
+%    \begin{macrocode}
 \let\fwd@lrbox\lrbox
 \patchcmd\fwd@lrbox\hbox\vbox{}{}
 \patchcmd\fwd@lrbox\color@setgroup{%
@@ -401,37 +401,37 @@ By defining new environments the user may choose between several individual desi
   \linewidth=\hsize%
 }{}{}
 \def\endfwd@lrbox{\unskip\color@endgroup}
-% \end{macrocode}
-% \end{macro}
+%    \end{macrocode}
+%    \end{macro}
 %
-% \begin{macro}{fwd@trivlist}
-% The package defines a modified trivlist to use the internal trivlist
-% for the complete |fullwidth| environment.
-% \begin{macrocode}
+%    \begin{macro}{fwd@trivlist}
+%      The package defines a modified trivlist to use the internal trivlist
+%      for the complete |fullwidth| environment.
+%    \begin{macrocode}
 \let\fwd@trivlist\trivlist
 \let\endfwd@trivlist\endtrivlist
 \patchcmd\endfwd@trivlist\@endparenv\fwd@endparenv{}{}
 \def\fwd@endparenv{%
   \addpenalty\@endparpenalty\addvspace\fwd@skipbelow@length\@endpetrue}
-% \end{macrocode}
-% \end{macro}
+%    \end{macrocode}
+%    \end{macro}
 %
-% \begin{macro}{\fwd@footnoterule}
-% The package uses a modified version of the footnote system of a |minipage|.
-% The macro |fwd@footnoterule| represent a small footnote line with a length of
-% 2.6 pt.
-% \begin{macrocode}
+%    \begin{macro}{\fwd@footnoterule}
+%     The package uses a modified version of the footnote system of a |minipage|.
+%     The macro |fwd@footnoterule| represent a small footnote line with a length of
+%     2.6 pt.
+%    \begin{macrocode}
 \newrobustcmd*\fwd@footnoterule{%
   \kern0\p@%
   \hrule \@width 1in \kern 2.6\p@}
-% \end{macrocode}
-% \end{macro}
+%    \end{macrocode}
+%    \end{macro}
 %
-% \begin{macro}{\fwd@footnoteoutput}
-% Equal to minipage (see \href{http://www.ctan.org/pkg/source2e}{source2e})%
-% with an added length to set the sep between text
-% and footnote. The length is set by the option |footenotedistance|.
-% \begin{macrocode}
+%    \begin{macro}{\fwd@footnoteoutput}
+%     Equal to minipage (see \href{http://www.ctan.org/pkg/source2e}{source2e})%
+%     with an added length to set the sep between text
+%     and footnote. The length is set by the option |footenotedistance|.
+%    \begin{macrocode}
 \newrobustcmd*\fwd@footnoteoutput{%
   \ifvoid\@mpfootins\else
     \nobreak%
@@ -441,71 +441,71 @@ By defining new environments the user may choose between several individual desi
     \unvbox\@mpfootins
   \fi%
 }
-% \end{macrocode}
-% \end{macro}
+%    \end{macrocode}
+%    \end{macro}
 %
-% \begin{macro}{\fwd@footnoteinput}
-% Save every footnote in a save box do save them. The comment above
-% can be used equal. (source2e)
-% \begin{macrocode}
+%    \begin{macro}{\fwd@footnoteinput}
+%     Save every footnote in a save box do save them. The comment above 
+%     can be used equal. (source2e)
+%    \begin{macrocode}
 \newrobustcmd*\fwd@footnoteinput{%
   \def\@mpfn{mpfootnote}%
   \def\thempfn{\thempfootnote}%
   \c@mpfootnote\z@%
   \let\@footnotetext\@mpfootnotetext%
 }
-% \end{macrocode}
-% \end{macro}
+%    \end{macrocode}
+%    \end{macro}
 %
-% \begin{macro}{\fwd@detect@output}
-% \begin{macro}{\fwd@standalone}
-% \begin{macro}{\fwd@putframe}
-% To allow pagebreaks the package must check whether the package is inside
-% a non breakable environment like |minipage|, |table| or |figure|. The command
-% |\fwd@detect@output| is used at the beginning of the environment |fullwidth|.
-% If the package is used inside one of them the definition of |\fwd@standalone|
-% is adabted otherwise the definition of |\fwd@putframe|.
-% \begin{macrocode}
+%    \begin{macro}{\fwd@detect@output}
+%    \begin{macro}{\fwd@standalone}
+%    \begin{macro}{\fwd@putframe}
+%     To allow pagebreaks the package must check whether the package is inside
+%     a non breakable environment like |minipage|, |table| or |figure|. The command
+%     |\fwd@detect@output| is used at the beginning of the environment |fullwidth|.
+%     If the package is used inside one of them the definition of |\fwd@standalone|
+%     is adabted otherwise the definition of  |\fwd@putframe|.
+%    \begin{macrocode}
 \let\fwd@reserved@a\@empty
 \newrobustcmd*\fwd@detect@output{%
-% \end{macrocode}
-% Test whether the option |nobreak| is set.
-% \begin{macrocode}
+%    \end{macrocode}
+%  Test whether the option |nobreak| is set.
+%    \begin{macrocode}
   \iffwd@nobreak
     \def\fwd@reserved@a{\fwd@standalone}%
   \else
     \def\fwd@reserved@a{\fwd@putframe}%
-% \end{macrocode}
-% |\@floatpenalty| is only used inside an float environment
-% ( see \href{http://tex.stackexchange.com/questions/27172/how-can-i-detect-if-im-inside-or-outside-of-a-float-environment}^^A
-% {tex.stackexchange How can I detect if I'm inside or outside of a float environment?}
-% \begin{macrocode}
+%    \end{macrocode}
+%  |\@floatpenalty| is only used inside an float environment
+%  ( see \href{http://tex.stackexchange.com/questions/27172/how-can-i-detect-if-im-inside-or-outside-of-a-float-environment}^^A
+%        {tex.stackexchange How can I detect if I'm inside or outside of a float environment?}
+%    \begin{macrocode}
     \ifnum\@floatpenalty<0\relax
       \if@twocolumn%
         \ifx\@captype\@undefined
           \def\fwd@reserved@a{\fwd@putframe}%
         \else
-          \PackageWarning{fullwidth}{fullwidth inside float ^^J
+          \PackageWarning{fullwidth}{fullwidth inside float  ^^J
                               fullwidth uses option nobreak}%
           \def\fwd@reserved@a{\fwd@standalone}%
         \fi
       \else
-        \PackageWarning{fullwidth inside float ^^J
+        \PackageWarning{fullwidth inside float  ^^J
                              fullwidth uses option nobreak}%
         \def\fwd@reserved@a{\fwd@standalone}%
       \fi%
     \fi%
-% \end{macrocode}
-% |\if@minipage| is true inside a |minipage| environment.
-% \begin{macrocode}
+%    \end{macrocode}
+%  |\if@minipage| is true inside a |minipage| environment.
+%    \begin{macrocode}
     \if@minipage%
-      \PackageWarning{fullwidth inside minipage ^^J
+      \PackageWarning{fullwidth inside minipage  ^^J
                              fullwidth uses option nobreak}%
       \def\fwd@reserved@a{\fwd@standalone}%
     \fi%
-% \end{macrocode}
-% |\ifinner| test for an internal mode (see texbook)
-% \begin{macrocode}
+%    \end{macrocode}
+%  |\ifinner| test for an internal mode (see texbook)
+%    \begin{macrocode}
     \ifinner%
       \PackageWarning{fullwidth inside a box ^^J
                             fullwidth uses option nobreak }%
@@ -514,15 +514,12 @@ By defining new environments the user may choose between several individual desi
   \fi%
   \fwd@reserved@a%
 }
-% \end{macrocode}
-% \end{macro}
-% \end{macro}
-% \end{macro}
+%    \end{macrocode}
+%    \end{macro}
+%    \end{macro}
+%    \end{macro}
 %
-% \begin{macro}{\fullwidth}
-% \begin{macro}{\fullwidth@ii}
-% \begin{macro}{\fullwidth@i}
-% \begin{macrocode}
+%    \begin{macrocode}
 \def\fullwidth{\@ifnextchar[\fullwidth@i\fullwidth@ii}%
 \def\fullwidth@ii{\fullwidth@i[]}%
 \def\fullwidth@i[#1]{% default-Umgebung
@@ -540,12 +537,9 @@ By defining new environments the user may choose between several individual desi
   \fwd@footnoteinput%
   \begin{fwd@lrbox}{\@tempboxa}%
  }
-% \end{macrocode}
-% \end{macro}
-% \end{macro}
-% \end{macro}
+%    \end{macrocode}
 %
-% \begin{macrocode}
+%    \begin{macrocode}
 \def\endfullwidth{%
   \iffwd@footnoteinside%
     \def\fwd@reserveda{%
@@ -567,10 +561,10 @@ By defining new environments the user may choose between several individual desi
   \hrule \@height\z@ \@width\hsize
   \endgroup%\@endparenv%
 }
-% \end{macrocode}
+%    \end{macrocode}
 %
 % Two-side mode
-% \begin{macrocode}
+%    \begin{macrocode}
 \newrobustcmd*\fwd@twoside@checklength{%
   \if@twoside
     \setlength\fwd@rightmargin@length{\fwd@outermargin@length}%
@@ -579,22 +573,22 @@ By defining new environments the user may choose between several individual desi
     \boolfalse{fwd@twosidemode}%
   \fi%
 }
-% \end{macrocode}
+%    \end{macrocode}
 %
-% \begin{macrocode}
+%    \begin{macrocode}
 \newcounter{fwd@zref@counter}%keine doppelten laebes
 \zref@newprop*{fwd@pagevalue}[0]{\number\value{page}}
 \zref@addprop{\ZREF@mainlist}{fwd@pagevalue}
-% \end{macrocode}
+%    \end{macrocode}
 %
-% \begin{macrocode}
+%    \begin{macrocode}
 \newrobustcmd*\fwd@zref@label{%
   \stepcounter{fwd@zref@counter}%
   \zref@label{fwd@pagelabel-\number\value{fwd@zref@counter}}%
 }
-% \end{macrocode}
+%    \end{macrocode}
 %
-% \begin{macrocode}
+%    \begin{macrocode}
 \newrobustcmd*\if@fwd@pageodd{%
   \zref@refused{fwd@pagelabel-\the\value{fwd@zref@counter}}%
   \ifodd\zref@extract{fwd@pagelabel-\the\value{fwd@zref@counter}}{fwd@pagevalue}%
@@ -604,27 +598,27 @@ By defining new environments the user may choose between several individual desi
   \fi
   \fwd@reserveda%
 }
-% \end{macrocode}
+%    \end{macrocode}
 %
-% \begin{macrocode}
+%    \begin{macrocode}
 \newrobustcmd*\fwd@pageisodd{%
   \setlength\fwd@rightmargin@length{\fwd@outermargin@length}%
   \setlength\fwd@leftmargin@length{\fwd@innermargin@length}%
 }
-% \end{macrocode}
+%    \end{macrocode}
 %
-% \begin{macrocode}
+%    \begin{macrocode}
 \newrobustcmd*\fwd@pageiseven{%
   \setlength\fwd@leftmargin@length{\fwd@outermargin@length}%
   \setlength\fwd@rightmargin@length{\fwd@innermargin@length}%
 }
-% \end{macrocode}
+%    \end{macrocode}
 %
-% \begin{macrocode}
+%    \begin{macrocode}
 \newrobustcmd*\fwd@@setzref{\fwd@zref@label\if@fwd@pageodd}
-% \end{macrocode}
+%    \end{macrocode}
 %
-% \begin{macrocode}
+%    \begin{macrocode}
 %%==================================================%%
 %%================= Platz auf Seite ================%%
 %%==================================================%%
@@ -639,9 +633,9 @@ By defining new environments the user may choose between several individual desi
       \advance\fwd@freevspace@length by -\pagetotal\relax%
     }%
 }
-% \end{macrocode}
+%    \end{macrocode}
 %
-% \begin{macrocode}
+%    \begin{macrocode}
 \newrobustcmd*\fwd@standalone{\relax%
   \ifvoid\@tempboxa\relax
     \PackageWarning{fullwidth}{The environment is empty\MessageBreak}%
@@ -651,9 +645,9 @@ By defining new environments the user may choose between several individual desi
   \fi
   \fwd@reserved@a%
 }
-% \end{macrocode}
+%    \end{macrocode}
 %
-% \begin{macrocode}
+%    \begin{macrocode}
 \def\fwd@putframe{\relax%
   \ifvoid\@tempboxa\relax
     \PackageWarning{fullwidth}{The environment is empty\MessageBreak}%
@@ -678,9 +672,9 @@ By defining new environments the user may choose between several individual desi
   \fi
   \fwd@reserved@a%
 }
-% \end{macrocode}
+%    \end{macrocode}
 %
-% \begin{macrocode}
+%    \begin{macrocode}
 \def\fwd@putframe@i{%Box muss gesplittet werden -- Ausgabe der ersten Teilbox
   %Berechnung der Splittgroesse Abstand oben
   \fwd@freepagevspace%
@@ -749,9 +743,9 @@ By defining new environments the user may choose between several individual desi
   \fi%
   \fwd@reserved@a%
 }
-% \end{macrocode}
+%    \end{macrocode}
 %
-% \begin{macrocode}
+%    \begin{macrocode}
 \def\fwd@putframe@ii{%Ausgabe der mittleren Box(en) wenn vorhanden
   \setlength{\fwd@freevspace@length}{\vsize}%
   \setlength{\dimen@}{\dimexpr\ht\@tempboxa+\dp\@tempboxa\relax}%
@@ -787,25 +781,23 @@ By defining new environments the user may choose between several individual desi
   }%Hier kommt die Ausgabe der letzten Box
   \fwd@reserved@a%
 }
-% \end{macrocode}
+%    \end{macrocode}
 %
-% \begin{macrocode}
+%    \begin{macrocode}
 \newrobustcmd\fwd@leftline[1]{\leftline{\hspace*{\fwd@leftmargin@length}#1}}%Keine Modifikation
-% \end{macrocode}
+%    \end{macrocode}
 %
-% \begin{macrocode}
+%    \begin{macrocode}
 \newrobustcmd\fwd@putbox@tempboxa{\fwd@leftline{\box\@tempboxa}}
 \newrobustcmd\fwd@putbox@tw@{\fwd@leftline{\box\tw@}}
-% \end{macrocode}
+%    \end{macrocode}
 %
-% \begin{macrocode}
+%    \begin{macrocode}
 \endinput
 }
-% \end{macrocode}
+%    \end{macrocode}
 %
-% \begin{macrocode}
+%    \begin{macrocode}
 %</package>
-% \end{macrocode}
+%    \end{macrocode}
 %\Finale
-
-
