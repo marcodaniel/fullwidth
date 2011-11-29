@@ -76,7 +76,9 @@ and the derived files           fullwidth.ins,
 %</internal>
 %<*driver>
 \documentclass[parskip=false,english,11pt]{ltxmdf}
+\let\mdftitlehere\maketitle
 \usepackage{doc}
+\let\maketitle\mdftitlehere
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{fullwidth}
@@ -96,14 +98,12 @@ and the derived files           fullwidth.ins,
 \usepackage{lipsum}
 %\usepackage[T1,altbullet]{lucidabr}
 \usepackage[scaled=0.82]{beramono}
-
+\usepackage{showframe}
 \usepackage{fullwidth}
 %\fullwidthsetup
 
 \def\fwdname{\texttt{fullwidth}\xspace}
-\introduction{This package provides the environment \fwdname which allows to set the left and right margins in a very simple way. It also allows page breaks. If you are using the \texttt{twoside} mode you can set the inner and outer margins. \par
-By defining new environments the user may choose between several individual designs.%
-}
+
 
 \EnableCrossrefs
 \CodelineIndex
@@ -128,15 +128,19 @@ By defining new environments the user may choose between several individual desi
 %
 %
 % \title{^^A
-%   \textsf{fullwidth} --- description text\thanks{^^A
-%     This file describes version \fileversion, last revised \filedate.^^A
-%   }^^A
+%   The package \fwdname^^A
 % }
 % \author{^^A
 %   Marco Daniel^^A
 % }
 % \date{Released \filedate}
-%
+% \version{\filedate}
+% \introduction{This package provides the environment \fwdname
+%  which allows to set the left and right margins in a very simple way. 
+% It also allows page breaks. If you are using the \texttt{twoside} mode 
+% you can set the inner and outer margins. \par
+%  By defining new environments the user may choose between several individual designs.^^A
+% }
 % \maketitle
 %
 % \changes{v0.1}{2011/11/25}{First public release}
@@ -156,17 +160,28 @@ By defining new environments the user may choose between several individual desi
 % The package itself loads the packages \mdpack{kvoptions} and \mdpack{etoolbox}.
 %
 % Load the package as usual:
-% \begin{mdexample}
-%  \usepackage[<GLOBAL OPTIONS>]{fullwidth}
-% \end{mdexample}
-%
+% \iffalse
+%<*example>
+% \fi
+\begin{mdexample}
+  \usepackage[<GLOBAL OPTIONS>]{fullwidth}
+\end{mdexample}
+% \iffalse
+%</example>
+% \fi
+
 % The package defines only one environment with the following syntax:
-% \begin{mdexample}
-%  \begin{fullwidth}[<LOCAL OPTIONS>]
-%     <CONTENT>
-%  \end{fullwidth}
-% \end{mdexample}
-%
+% \iffalse
+%<*example>
+% \fi
+\begin{mdexample}
+ \begin{fullwidth}[<LOCAL OPTIONS>]
+     <CONTENT>
+  \end{fullwidth}
+\end{mdexample}
+% \iffalse
+%</example>
+% \fi
 %
 % \minisec{Autodetecting floats}
 % I added a detection of \mdpack{float} and \mdpack{minipage} environments.
@@ -259,12 +274,12 @@ By defining new environments the user may choose between several individual desi
 %
 % \section{Revision history}\label{rev}
 % \raggedright
-% \minisec{Version 0.1 submitted ???????}
+% \minisec{Version 0.1 submitted 27 november 2011}
 % \begin{itemize*}
 % \item first upload to \href{http://dante.ctan.org/upload}{CTAN}
 % \end{itemize*}
 % \clearpage
-% \newgeometry{left=5.5cm}
+% \newgeometry{left=5.5cm,}
 % \addto\MacroFont{\color{blue!60!black}}
 % \preto\theCodelineNo{\color{gray}}
 % \lstMakeShortInline[basicstyle=\small\ttfamily\color{blue!60!black}]{|}
@@ -286,7 +301,8 @@ By defining new environments the user may choose between several individual desi
 % \subsection{Preliminaries}
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{fullwidth}[2011/11/25 v0.1 Provides a full-width environment]
+\ProvidesPackage{fullwidth}%
+   [2011/11/25 v0.1 Provides a full-width environment]
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -519,32 +535,61 @@ By defining new environments the user may choose between several individual desi
 %    \end{macro}
 %    \end{macro}
 %
+%    \begin{macro}{\fullwidth}
+%    \begin{macro}{\fullwidth@ii}
+%    \begin{macro}{\fullwidth@i}
+%     At this point the environment |fullwidth| is defined. The beginning and  
+%     the end of the environment is defined separatly. So far i am not able 
+%     to explain why clearly. The commands |\fullwidth@i| and |\fullwidth@ii|
+%     are used to detect the optional argument. 
 %    \begin{macrocode}
 \def\fullwidth{\@ifnextchar[\fullwidth@i\fullwidth@ii}%
 \def\fullwidth@ii{\fullwidth@i[]}%
-\def\fullwidth@i[#1]{% default-Umgebung
+\def\fullwidth@i[#1]{%
+%    \end{macrocode}
+%  Let every definition local
+%    \begin{macrocode}
   \begingroup
   \fullwidthsetup{#1}%%
   \fwd@twoside@checklength%
   \let\width\z@%
   \let\height\z@%
+%    \end{macrocode}
+%  Make sure the |skipabove| works correct and local
+%    \begin{macrocode}
   \setlength{\topsep}{\fwd@skipabove@length}%
   \begingroup%
     \let\partopsep\z@%
     \expandafter\endgroup%
+%    \end{macrocode}
+%  Using of own |\trivlist|
+%    \begin{macrocode}
   \begin{fwd@trivlist}\item\relax%
   \hsize=\fwd@width@length\relax%
   \fwd@footnoteinput%
+%    \end{macrocode}
+%  Start the modifcated savebox and first save the whole contents inside
+%  |\@tempboxa|.
+%    \begin{macrocode}
   \begin{fwd@lrbox}{\@tempboxa}%
  }
 %    \end{macrocode}
+%    \end{macro}
+%    \end{macro}
+%    \end{macro}
 %
+%    \begin{macro}{\endfullwidth}
+%     The end of the global environment is defined.
 %    \begin{macrocode}
 \def\endfullwidth{%
   \iffwd@footnoteinside%
     \def\fwd@reserveda{%
       \fwd@footnoteoutput%
       \end{fwd@lrbox}%
+%    \end{macrocode}
+%  The whole contents is now save in the savebox |\@tempboxa|. The outputroutine
+%  |\fwd@detect@output| is now working.
+%    \begin{macrocode}
       \let\hsize\linewidth
       \fwd@detect@output%
     }%
@@ -559,9 +604,10 @@ By defining new environments the user may choose between several individual desi
   \fwd@reserveda%
   \end{fwd@trivlist}%
   \hrule \@height\z@ \@width\hsize
-  \endgroup%\@endparenv%
+  \endgroup\@endparenv%
 }
 %    \end{macrocode}
+%    \end{macro}
 %
 % Two-side mode
 %    \begin{macrocode}
