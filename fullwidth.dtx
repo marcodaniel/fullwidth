@@ -305,6 +305,7 @@ and the derived files           fullwidth.ins,
    [2011/11/25 v0.1 Provides a full-width environment]
 %    \end{macrocode}
 %
+% \subsection*{Declaration of Options}
 %    \begin{macrocode}
 \RequirePackage{kvoptions,etoolbox}
 \RequirePackage{zref-abspage}
@@ -394,6 +395,7 @@ and the derived files           fullwidth.ins,
 %    \end{macro}
 %    \end{macro}
 %
+% % \subsection*{The code itself}
 %    \begin{macro}{\fullwidthsetup}
 %      Process all defined options and define the short form of |\setkeys{fwd}|
 %    \begin{macrocode}
@@ -551,6 +553,7 @@ and the derived files           fullwidth.ins,
 %    \begin{macrocode}
   \begingroup
   \fullwidthsetup{#1}%%
+%  testing of |twoside| mode
   \fwd@twoside@checklength%
   \let\width\z@%
   \let\height\z@%
@@ -608,11 +611,17 @@ and the derived files           fullwidth.ins,
 }
 %    \end{macrocode}
 %    \end{macro}
-%
-% Two-side mode
+% 
+% \paragraph{Two-side mode}
+%    \begin{macro}{\fwd@twoside@checklength}
 %    \begin{macrocode}
 \newrobustcmd*\fwd@twoside@checklength{%
   \if@twoside
+%    \end{macrocode}
+%    If the document set in |twoside| mode set |rightmargin| to |outermargin|
+%    and |leftmargin| to |innermargin|. This is used to work further with
+%   |leftmargin| and |rightmargin|. 
+%    \begin{macrocode}
     \setlength\fwd@rightmargin@length{\fwd@outermargin@length}%
     \setlength\fwd@leftmargin@length{\fwd@innermargin@length}%
   \else
@@ -620,24 +629,39 @@ and the derived files           fullwidth.ins,
   \fi%
 }
 %    \end{macrocode}
+%    \end{macro}
 %
+%    \begin{macro}{fwd@zref@counter}
+%    \begin{macro}{fwd@pagevalue}
+%    The package fullwidth uses the package |zref| to detect odd or even pages.
+%    Therefor the counter |fwd@zref@counter| which will be increaed is defined
+%    and used inside |zref@label| to avoid mulitple labels.
 %    \begin{macrocode}
-\newcounter{fwd@zref@counter}%keine doppelten laebes
+\newcounter{fwd@zref@counter}
 \zref@newprop*{fwd@pagevalue}[0]{\number\value{page}}
 \zref@addprop{\ZREF@mainlist}{fwd@pagevalue}
 %    \end{macrocode}
+%    \end{macro}
+%    \end{macro}
 %
+%    \begin{macro}{\fwd@zref@label}
+%    The command is a combination of the increasing the counter |fwd@zref@counter|
+%    and |\zref@label|.
 %    \begin{macrocode}
 \newrobustcmd*\fwd@zref@label{%
   \stepcounter{fwd@zref@counter}%
   \zref@label{fwd@pagelabel-\number\value{fwd@zref@counter}}%
 }
 %    \end{macrocode}
+%    \end{macro}
 %
+%    \begin{macro}{\if@fwd@pageodd}
+%    This is the method of fullwidth to detect odd or even pages.
 %    \begin{macrocode}
 \newrobustcmd*\if@fwd@pageodd{%
   \zref@refused{fwd@pagelabel-\the\value{fwd@zref@counter}}%
-  \ifodd\zref@extract{fwd@pagelabel-\the\value{fwd@zref@counter}}{fwd@pagevalue}%
+  \ifodd\zref@extract{fwd@pagelabel-\the\value{fwd@zref@counter}}%
+                     {fwd@pagevalue}%
     \edef\fwd@reserveda{\fwd@pageisodd}%
   \else
     \edef\fwd@reserveda{\fwd@pageiseven}%
@@ -645,34 +669,53 @@ and the derived files           fullwidth.ins,
   \fwd@reserveda%
 }
 %    \end{macrocode}
+%    \end{macro}
 %
+%    \begin{macro}{\fwd@pageisodd}
+%    \begin{macro}{\fwd@pageiseven}
+%    The length |rightmargin| and |leftmargin| will be set to |innermargin| 
+%    or |outermargin| depentent on the result of |\if@fwd@pageodd|.
 %    \begin{macrocode}
 \newrobustcmd*\fwd@pageisodd{%
   \setlength\fwd@rightmargin@length{\fwd@outermargin@length}%
   \setlength\fwd@leftmargin@length{\fwd@innermargin@length}%
 }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
 \newrobustcmd*\fwd@pageiseven{%
   \setlength\fwd@leftmargin@length{\fwd@outermargin@length}%
   \setlength\fwd@rightmargin@length{\fwd@innermargin@length}%
 }
 %    \end{macrocode}
+%    \end{macro}
+%    \end{macro}
 %
+%    \begin{macro}{\fwd@@setzref}
+%     Combine |\fwd@zref@label| and |\if@fwd@pageodd|
 %    \begin{macrocode}
 \newrobustcmd*\fwd@@setzref{\fwd@zref@label\if@fwd@pageodd}
 %    \end{macrocode}
+%    \end{macro}
 %
+%
+%
+% \paragraph{Free vertical space on the current page}
+%    \begin{macro}{\fwd@freevspace@length}
+%    \begin{macro}{\fwd@freepagevspace}
+%     This macro is used to calculate the free vertical space on the current page.
 %    \begin{macrocode}
-%%==================================================%%
-%%================= Platz auf Seite ================%%
-%%==================================================%%
 \newlength\fwd@freevspace@length
 \newrobustcmd*\fwd@freepagevspace{%
+%    \end{macrocode}
+%     First |penalty| is set to 10.000 to set the current point as unbreakable. It is equal
+%     to the command |\nobreak|. Second a skip of |2\baselineskip| and the height of the |\@tempboxa|
+%     is initialized. No set the penalty to 9999 with also doesn't allow pagebreaks but with a
+%     non infinity penalty.
+%    \begin{macrocode}
   \penalty\@M \vskip 2\baselineskip \vskip\height
   \penalty9999 \vskip -2\baselineskip \vskip-\height
   \penalty9999
+%    \end{macrocode}
+%     |\pagegoal| is only on an empty page equal to |maxdimen|
+%    \begin{macrocode}
   \ifdimequal{\pagegoal}{\maxdimen}%
     {\fwd@freevspace@length\vsize}%
     {\fwd@freevspace@length=\pagegoal\relax%
@@ -680,6 +723,8 @@ and the derived files           fullwidth.ins,
     }%
 }
 %    \end{macrocode}
+%    \end{macro}
+%    \end{macro}
 %
 %    \begin{macrocode}
 \newrobustcmd*\fwd@standalone{\relax%
